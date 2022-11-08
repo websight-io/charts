@@ -6,16 +6,97 @@ cms:
   ports:
     admin: 8080
   image: public.ecr.aws/ds/websight-cms-ce:luna-2.0.0
+  resources:
+    requests:
+      # -- WebSight CMS CE request memory resources
+      memory: 1Gi
+      # -- WebSight CMS CE request cpu resources
+      cpu: 500m
+    limits:
+      # -- WebSight CMS CE limits memory resources
+      memory: 4Gi
+      # -- WebSight CMS CE limits cpu resources
+      cpu: 1000m
+  livenessProbe:
+    # -- enables WebSight CMS CE pods liveness probe
+    enabled: true
+    initialDelaySeconds: 120
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    # -- enables WebSight CMS CE pods readiness probe
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
 
 nginx:
   ports:
     http: 80
   image: public.ecr.aws/ds/websight-nginx-ce:luna-2.0.0
+  resources:
+    requests:
+      # -- WebSight Nginx request memory resources
+      memory: 50Mi
+      # -- WebSight Nginx request cpu resources
+      cpu: 50m
+    limits:
+      # -- WebSight Nginx limits memory resources
+      memory: 100Mi
+      # -- WebSight Nginx limits cpu resources
+      cpu: 100m
+  livenessProbe:
+    # -- enables WebSight Nginx pods liveness probe
+    enabled: true
+    initialDelaySeconds: 120
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    # -- enables WebSight Nginx pods readiness probe
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
 
 mongo:
   ports:
     service: 27017
   image: mongo:4.4.6
+  resources:
+    requests:
+      # -- MongoDB request memory resources
+      memory: 1Gi
+      # -- MongoDB request cpu resources
+      cpu: 500m
+    limits:
+      # -- MongoDB limits memory resources
+      memory: 4Gi
+      # -- MongoDB limits cpu resources
+      cpu: 1000m
+  livenessProbe:
+    # -- enables MongoDB pods liveness probe
+    enabled: true
+    initialDelaySeconds: 120
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    # -- enables MongoDB pods readiness probe
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
 
 ingress:
   hosts:

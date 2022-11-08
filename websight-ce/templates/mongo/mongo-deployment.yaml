@@ -26,7 +26,13 @@ spec:
           name: mongo
           ports:
             - containerPort: 27017
-          resources: {}
+          resources:
+            requests:
+              memory: {{ .Values.mongo.resources.requests.memory }}
+              cpu: {{ .Values.mongo.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.mongo.resources.limits.memory }}
+              cpu: {{ .Values.mongo.resources.limits.cpu }}
           volumeMounts:
             - mountPath: /data/db
               name: mongo-repository

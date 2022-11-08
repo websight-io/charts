@@ -21,7 +21,13 @@ spec:
           name: nginx
           ports:
             - containerPort: 80
-          resources: {}
+          resources:
+            requests:
+              memory: {{ .Values.nginx.resources.requests.memory }}
+              cpu: {{ .Values.nginx.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.nginx.resources.limits.memory }}
+              cpu: {{ .Values.nginx.resources.limits.cpu }}
           volumeMounts:
             - mountPath: /usr/share/nginx/html
               name: site-repository

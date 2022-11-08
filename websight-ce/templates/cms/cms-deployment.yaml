@@ -32,7 +32,13 @@ spec:
           name: cms
           ports:
             - containerPort: 8080
-          resources: {}
+          resources:
+            requests:
+              memory: {{ .Values.cms.resources.requests.memory }}
+              cpu: {{ .Values.cms.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.cms.resources.limits.memory }}
+              cpu: {{ .Values.cms.resources.limits.cpu }}
           volumeMounts:
             - mountPath: /websight/logs
               name: cms-logs
