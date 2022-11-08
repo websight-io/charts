@@ -5,7 +5,9 @@
 cms:
   ports:
     admin: 8080
-  image: public.ecr.aws/ds/websight-cms-ce:luna-2.0.0
+  image: 
+    repository: public.ecr.aws/ds/websight-cms-ce
+    tag: luna-2.0.0
   resources:
     requests:
       # -- WebSight CMS CE request memory resources
@@ -37,7 +39,9 @@ cms:
 nginx:
   ports:
     http: 80
-  image: public.ecr.aws/ds/websight-nginx-ce:luna-2.0.0
+  image: 
+    repository: public.ecr.aws/ds/websight-nginx-ce
+    tag: luna-2.0.0
   replicas: 2
   resources:
     requests:
@@ -62,7 +66,9 @@ nginx:
 mongo:
   ports:
     service: 27017
-  image: mongo:4.4.6
+  image: 
+    repository: mongo
+    tag: 4.4.6
   resources:
     requests:
       # -- MongoDB request memory resources

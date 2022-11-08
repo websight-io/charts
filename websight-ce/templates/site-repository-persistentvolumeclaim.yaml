@@ -2,6 +2,13 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "websight-ce.fullname" . }}-site-repository
+  labels:
+    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-site-repository
+    app.kubernetes.io/instance: {{ .Release.Name }}-site-repository
+    app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: "site-repository"
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
     - ReadWriteOnce

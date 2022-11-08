@@ -2,6 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "websight-ce.fullname" . }}-mongo
+  labels:
+    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-mongo
+    app.kubernetes.io/instance: {{ .Release.Name }}-mongo
+    app.kubernetes.io/version: {{ .Values.mongo.image.tag }}
+    app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: "content-store"
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: 1
   selector:
@@ -22,7 +30,7 @@ spec:
               value: mongoadmin
             - name: MONGO_INITDB_ROOT_USERNAME
               value: mongoadmin
-          image: {{ .Values.mongo.image }}
+          image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag }}"
           name: mongo
           ports:
             - containerPort: 27017

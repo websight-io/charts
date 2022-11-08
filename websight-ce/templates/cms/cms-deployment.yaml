@@ -2,6 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "websight-ce.fullname" . }}-cms
+  labels:
+    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-cms
+    app.kubernetes.io/instance: {{ .Release.Name }}-cms
+    app.kubernetes.io/version: {{ .Values.cms.image.tag }}
+    app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: cms
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: 1
   selector:
@@ -28,7 +36,7 @@ spec:
               value: wsadmin
             - name: WS_ADMIN_USERNAME
               value: wsadmin
-          image: {{ .Values.cms.image }}
+          image: "{{ .Values.cms.image.repository }}:{{ .Values.cms.image.tag }}"
           name: cms
           ports:
             - containerPort: 8080

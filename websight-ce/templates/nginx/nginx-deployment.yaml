@@ -2,6 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "websight-ce.fullname" . }}-nginx
+  labels:
+    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-nginx
+    app.kubernetes.io/instance: {{ .Release.Name }}-nginx
+    app.kubernetes.io/version: {{ .Values.nginx.image.tag }}
+    app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: "web-server"
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.nginx.replicas }}
   selector:
@@ -17,7 +25,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}-nginx
     spec:
       containers:
-        - image: {{ .Values.nginx.image }}
+        - image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
           name: nginx
           ports:
             - containerPort: 80

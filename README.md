@@ -8,7 +8,7 @@ This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the H
 
 ## ToDo:
 
-- labels
+- configmaps
 - NOTES.txt
 - generating documentation from `values.yaml`
 - releasing using GitHub Actions

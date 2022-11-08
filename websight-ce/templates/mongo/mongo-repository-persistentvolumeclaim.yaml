@@ -2,6 +2,14 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "websight-ce.fullname" . }}-mongo-repository
+  labels:
+    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-mongo
+    app.kubernetes.io/instance: {{ .Release.Name }}-mongo
+    app.kubernetes.io/version: {{ .Values.mongo.image.tag }}
+    app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: "content-store"
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
     - ReadWriteOnce
