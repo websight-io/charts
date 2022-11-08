@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cms-kubernetes-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: {{ .Values.ingress.hosts.cms }}
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: "/"
+        backend:
+          service:
+            name: {{ include "websight-ce.fullname" . }}-cms
+            port:
+              number: 8080
+  - host: {{ .Values.ingress.hosts.site }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {{ include "websight-ce.fullname" . }}-nginx
+            port:
+              number: 80

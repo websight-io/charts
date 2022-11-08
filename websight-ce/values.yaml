@@ -1,0 +1,23 @@
+# Default values for websight-ce.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+cms:
+  ports:
+    admin: 8080
+  image: public.ecr.aws/ds/websight-cms-ce:luna-2.0.0
+
+nginx:
+  ports:
+    http: 80
+  image: public.ecr.aws/ds/websight-nginx-ce:luna-2.0.0
+
+mongo:
+  ports:
+    service: 27017
+  image: mongo:4.4.6
+
+ingress:
+  hosts:
+    cms: "cms.127.0.0.1.nip.io"
+    site: "luna.127.0.0.1.nip.io"

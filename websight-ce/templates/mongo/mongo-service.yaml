@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "websight-ce.fullname" . }}-mongo
+spec:
+  ports:
+    - port: {{ .Values.mongo.ports.service }}
+      targetPort: 27017
+  selector:
+    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-mongo
+    app.kubernetes.io/instance: {{ .Release.Name }}-mongo

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "websight-ce.fullname" . }}-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "websight-ce.name" . }}-nginx
+      app.kubernetes.io/instance: {{ .Release.Name }}-nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "websight-ce.name" . }}-nginx
+        app.kubernetes.io/instance: {{ .Release.Name }}-nginx
+    spec:
+      containers:
+        - image: {{ .Values.nginx.image }}
+          name: nginx
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: site-repository
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: site-repository
+          persistentVolumeClaim:
+            claimName: {{ include "websight-ce.fullname" . }}-site-repository
+            readOnly: true
