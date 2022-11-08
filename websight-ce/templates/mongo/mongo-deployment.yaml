@@ -36,6 +36,20 @@ spec:
           volumeMounts:
             - mountPath: /data/db
               name: mongo-repository
+          {{- if .Values.mongo.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.mongo.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.mongo.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.mongo.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.mongo.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.mongo.livenessProbe.successThreshold }}
+            exec:
+              command:
+              - bash
+              - "-c"
+              - |
+                mongo -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --eval db.adminCommand\(\"ping\"\)
+          {{- end }}
       restartPolicy: Always
       volumes:
         - name: mongo-repository

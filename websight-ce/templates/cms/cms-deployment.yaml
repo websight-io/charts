@@ -44,6 +44,30 @@ spec:
               name: cms-logs
             - mountPath: /websight/docroot
               name: site-repository
+          {{- if .Values.cms.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.cms.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.cms.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.cms.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.cms.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.cms.livenessProbe.successThreshold }}
+            httpGet:
+              path: /system/health
+              port: 8080
+              scheme: HTTP
+          {{- end }}
+          {{- if .Values.cms.readinessProbe.enabled }}
+          readinessProbe:
+            initialDelaySeconds: {{ .Values.cms.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.cms.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.cms.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.cms.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.cms.readinessProbe.successThreshold }}
+            httpGet:
+              path: /apps/websight-authentication/login.html
+              port: 8080
+              scheme: HTTP
+          {{- end }}
       restartPolicy: Always
       volumes:
         - name: cms-logs

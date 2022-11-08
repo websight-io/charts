@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "websight-ce.fullname" . }}-nginx
 spec:
-  replicas: 1
+  replicas: {{ .Values.nginx.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "websight-ce.name" . }}-nginx
@@ -32,6 +32,19 @@ spec:
             - mountPath: /usr/share/nginx/html
               name: site-repository
               readOnly: true
+          {{- if .Values.nginx.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.nginx.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.nginx.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.nginx.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.nginx.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.nginx.livenessProbe.successThreshold }}
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+          {{- end }}
+
       restartPolicy: Always
       volumes:
         - name: site-repository

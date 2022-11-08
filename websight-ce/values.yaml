@@ -20,24 +20,25 @@ cms:
   livenessProbe:
     # -- enables WebSight CMS CE pods liveness probe
     enabled: true
-    initialDelaySeconds: 120
-    periodSeconds: 30
-    timeoutSeconds: 5
-    failureThreshold: 6
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
     successThreshold: 1
   readinessProbe:
     # -- enables WebSight CMS CE pods readiness probe
     enabled: true
-    initialDelaySeconds: 60
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+    failureThreshold: 3
     successThreshold: 1
 
 nginx:
   ports:
     http: 80
   image: public.ecr.aws/ds/websight-nginx-ce:luna-2.0.0
+  replicas: 2
   resources:
     requests:
       # -- WebSight Nginx request memory resources
@@ -52,17 +53,9 @@ nginx:
   livenessProbe:
     # -- enables WebSight Nginx pods liveness probe
     enabled: true
-    initialDelaySeconds: 120
-    periodSeconds: 30
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
-  readinessProbe:
-    # -- enables WebSight Nginx pods readiness probe
-    enabled: true
-    initialDelaySeconds: 60
-    periodSeconds: 10
-    timeoutSeconds: 5
+    initialDelaySeconds: 30
+    periodSeconds: 5
+    timeoutSeconds: 1
     failureThreshold: 6
     successThreshold: 1
 
@@ -84,18 +77,10 @@ mongo:
   livenessProbe:
     # -- enables MongoDB pods liveness probe
     enabled: true
-    initialDelaySeconds: 120
-    periodSeconds: 30
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
-  readinessProbe:
-    # -- enables MongoDB pods readiness probe
-    enabled: true
-    initialDelaySeconds: 60
+    initialDelaySeconds: 15
     periodSeconds: 10
     timeoutSeconds: 5
-    failureThreshold: 6
+    failureThreshold: 3
     successThreshold: 1
 
 ingress:
