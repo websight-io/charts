@@ -13,7 +13,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.cms.ports.admin }}
+    - port: {{ .Values.cms.ports.panel }}
       targetPort: 8080
   selector:
     app.kubernetes.io/name: {{ include "websight-ce.name" . }}-cms

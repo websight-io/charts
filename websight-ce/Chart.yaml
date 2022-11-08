@@ -1,6 +1,6 @@
 apiVersion: v2
 name: websight-ce
-description: A Helm chart for WebSight CE
+description: This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the Helm package manager.
 type: application
 version: 0.1.0
 appVersion: "1.2.0"

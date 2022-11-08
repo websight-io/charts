@@ -1,1 +1,12 @@
+Thank you for installing {{ .Chart.Name }}.
+Your release is named {{ .Release.Name }}.
+
+Your WebSight CE instance is starting...
+
+{{- if .Values.ingress.enabled }}
+WebSight instance will be available at:{{ ` ` }}
+ - CMS Panel: http://{{ .Values.ingress.hosts.cms }}
+ - Demo site: http://{{ .Values.ingress.hosts.site }}
+{{- end }}
+
 Happy WebSight helming!

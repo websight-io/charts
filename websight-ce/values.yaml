@@ -1,12 +1,15 @@
 # Default values for websight-ce.
 # This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 
+# WebSight CMS CE configuration
 cms:
   ports:
-    admin: 8080
+    # -- CMS Panel port
+    panel: 8080
   image: 
+    # -- WebSight CMS CE project image repository
     repository: public.ecr.aws/ds/websight-cms-ce
+    # -- WebSight CMS CE project image tag
     tag: luna-2.0.0
   resources:
     requests:
@@ -36,12 +39,17 @@ cms:
     failureThreshold: 3
     successThreshold: 1
 
+# Web Server (Nginx) configuration
 nginx:
   ports:
+    # -- Nginx port
     http: 80
   image: 
+    # -- Web Server image repository
     repository: public.ecr.aws/ds/websight-nginx-ce
+    # -- Web Server project image tag
     tag: luna-2.0.0
+  # -- number of Web Server replicas
   replicas: 2
   resources:
     requests:
@@ -63,11 +71,15 @@ nginx:
     failureThreshold: 6
     successThreshold: 1
 
+# MongoDB Content Store configuration
 mongo:
   ports:
+    # -- MongoDB Content Store port
     service: 27017
   image: 
+    # -- MongoDB Content Store image repository
     repository: mongo
+    # -- MongoDB Content Store image tag
     tag: 4.4.6
   resources:
     requests:
@@ -89,7 +101,12 @@ mongo:
     failureThreshold: 3
     successThreshold: 1
 
+# Ingress configuration
 ingress:
+  # -- enables ingress
+  enabled: true
   hosts:
+    # -- cms panel host
     cms: "cms.127.0.0.1.nip.io"
+    # -- site host
     site: "luna.127.0.0.1.nip.io"
