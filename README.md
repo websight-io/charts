@@ -96,6 +96,5 @@ The command removes all the Kubernetes components associated with the chart and 
 ## Improvements (help wanted)
 
 - configmaps/secrets support
-- releasing using GitHub Actions
 - ingress support for cloud providers (`metadata.annotations`)
 - `*` use mongo from bitnami
