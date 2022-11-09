@@ -5,39 +5,36 @@ This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the H
 
 [WebSight](https://websight.io/) is a Digitial Experience Platform driven by the enterprise-grade CMS.
 
-## TL;DR
-```
+## Quick start
+```bash
 helm repo add websight https://websight-io.github.io/websight-ce-helm
 helm install my-websight websight/websight-ce -n ws --create-namespace
 ```
 
+> WebSight instance will be available at:
+> - CMS Panel: http://cms.127.0.0.1.nip.io
+> - Demo site: http://luna.127.0.0.1.nip.io
+
 ## Prerequisites
+
 - Kubernetes cluster with at least 8 GB ram and 2 CPU
 - Helm 3.6+
-- Add Helm repository with `helm repo add websight https://websight-io.github.io/websight-ce-helm`
+
+> Tip: If you wish to run WebSight on local k8s cluster (e.g. Docker Desktop) you need to [install ingress first](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start).
 
 ## Installing the Chart
-To instal the chart with the release name `my-websight` using existing domain that points to your Kubernetes cluster, run:
-```
+To install the chart with the release name `my-websight` using existing domain that points to your Kubernetes cluster, run:
+```bash
+helm repo add websight https://websight-io.github.io/websight-ce-helm
 helm install --set ingress.enabled=true --set ingress.hosts.cms=cms.my-page.domain --set ingress.hosts.site=my-page.domain my-websight websight/websight-ce -n ws --create-namespace
 ```
 
 This command deploys WebSight CE on Kubernetes cluster with the default configuration using `ws` namespace.
 The [Parameters](#parameters) section lists the parameters that can be configured.
 
-> Tip: If you wish to run WebSight on local k8s cluster (e.g. Docker Desktop) you need to [install ingress first](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start).
-> Then run:
-> ```
-> helm install --set ingress.enabled=true my-websight websight/websight-ce -n ws --create-namespace
-> ```
->
-> WebSight instance will be available at:
-> - CMS Panel: http://cms.127.0.0.1.nip.io
-> - Demo site: http://luna.127.0.0.1.nip.io
-
 ## Uninstalling the Chart
 To uninstall/delete the deployment run:
-```
+```bash
 helm uninstall my-websight -n ws
 ```
 
@@ -98,7 +95,7 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ## Improvements (help wanted)
 
-- configmaps
+- configmaps/secrets support
 - releasing using GitHub Actions
 - ingress support for cloud providers (`metadata.annotations`)
 - `*` use mongo from bitnami
