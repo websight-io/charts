@@ -31,9 +31,7 @@ spec:
             - name: MONGODB_HOST
               value: {{ include "websight-ce.fullname" . }}-mongo
             - name: MONGODB_PORT
-              value: "27017"
-            - name: WS_ADMIN_PASSWORD
-              value: wsadmin
+              value: {{ .Values.mongo.ports.service }}
             - name: WS_ADMIN_USERNAME
               value: wsadmin
           image: "{{ .Values.cms.image.repository }}:{{ .Values.cms.image.tag }}"
