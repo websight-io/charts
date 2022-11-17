@@ -92,7 +92,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | nginx.resources.limits.memory | string | `"100Mi"` | WebSight Nginx limits memory resources |
 | nginx.resources.requests.cpu | string | `"50m"` | WebSight Nginx request cpu resources |
 | nginx.resources.requests.memory | string | `"50Mi"` | WebSight Nginx request memory resources |
-| siteRepository.storage.size | string | `"2Gi"` |  |
+| siteRepository.storage.size | string | `"2Gi"` | Site Repository volume size |
 
 ## Improvements (help wanted)
 

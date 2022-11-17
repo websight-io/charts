@@ -73,8 +73,10 @@ nginx:
     failureThreshold: 6
     successThreshold: 1
 
+# Site Repository volume configuration
 siteRepository:
   storage:
+    # -- Site Repository volume size
     size: 2Gi
 
 # MongoDB Content Store configuration
