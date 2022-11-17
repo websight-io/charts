@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cms-kubernetes-ingress
+  name: {{ include "websight-ce.fullname" . }}-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
   labels:
