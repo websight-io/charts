@@ -1,5 +1,5 @@
 # WebSight CE Helm
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: luna-2.0.0](https://img.shields.io/badge/AppVersion-luna--2.0.0-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: luna-2.1.1](https://img.shields.io/badge/AppVersion-luna--2.1.1-informational?style=flat-square)
 
 This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -43,7 +43,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | cms.image.repository | string | `"public.ecr.aws/ds/websight-cms-ce"` | WebSight CMS CE project image repository |
-| cms.image.tag | string | `"luna-2.0.0"` | WebSight CMS CE project image tag |
+| cms.image.tag | string | `"luna-2.1.1"` | WebSight CMS CE project image tag |
 | cms.livenessProbe.enabled | bool | `true` | enables WebSight CMS CE pods liveness probe |
 | cms.livenessProbe.failureThreshold | int | `3` |  |
 | cms.livenessProbe.initialDelaySeconds | int | `30` |  |
@@ -79,7 +79,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.resources.requests.cpu | string | `"500m"` | MongoDB request cpu resources |
 | mongo.resources.requests.memory | string | `"1Gi"` | MongoDB request memory resources |
 | nginx.image.repository | string | `"public.ecr.aws/ds/websight-nginx-ce"` | Web Server image repository |
-| nginx.image.tag | string | `"luna-2.0.0"` | Web Server project image tag |
+| nginx.image.tag | string | `"luna-2.1.1"` | Web Server project image tag |
 | nginx.livenessProbe.enabled | bool | `true` | enables WebSight Nginx pods liveness probe |
 | nginx.livenessProbe.failureThreshold | int | `6` |  |
 | nginx.livenessProbe.initialDelaySeconds | int | `30` |  |

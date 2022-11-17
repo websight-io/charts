@@ -10,7 +10,7 @@ cms:
     # -- WebSight CMS CE project image repository
     repository: public.ecr.aws/ds/websight-cms-ce
     # -- WebSight CMS CE project image tag
-    tag: luna-2.0.0
+    tag: luna-2.1.1
   # -- number of WebSight CMS CE replicas
   replicas: 2
   resources:
@@ -50,7 +50,7 @@ nginx:
     # -- Web Server image repository
     repository: public.ecr.aws/ds/websight-nginx-ce
     # -- Web Server project image tag
-    tag: luna-2.0.0
+    tag: luna-2.1.1
   # -- number of Web Server replicas
   replicas: 2
   resources:
