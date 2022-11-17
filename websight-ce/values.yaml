@@ -11,6 +11,8 @@ cms:
     repository: public.ecr.aws/ds/websight-cms-ce
     # -- WebSight CMS CE project image tag
     tag: luna-2.0.0
+  # -- number of WebSight CMS CE replicas
+  replicas: 2
   resources:
     requests:
       # -- WebSight CMS CE request memory resources
@@ -71,6 +73,10 @@ nginx:
     failureThreshold: 6
     successThreshold: 1
 
+siteRepository:
+  storage:
+    size: 2Gi
+
 # MongoDB Content Store configuration
 mongo:
   ports:
@@ -104,7 +110,7 @@ mongo:
 # Ingress configuration
 ingress:
   # -- enables ingress
-  enabled: true
+  enabled: false
   hosts:
     # -- cms panel host
     cms: "cms.127.0.0.1.nip.io"

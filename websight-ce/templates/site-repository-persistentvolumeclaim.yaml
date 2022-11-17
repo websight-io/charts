@@ -11,7 +11,11 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
+  {{- if le (add .Values.cms.replicas .Values.nginx.replicas) 2 }}
     - ReadWriteOnce
+  {{ else }}
+    - ReadWriteMany
+  {{ end -}}
   resources:
     requests:
-      storage: 2Gi
+      storage: {{ .Values.siteRepository.storage.size }}

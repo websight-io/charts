@@ -8,7 +8,7 @@ This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the H
 ## Quick start
 ```bash
 helm repo add websight https://websight-io.github.io/websight-ce-helm
-helm install my-websight websight/websight-ce -n ws --create-namespace
+helm install my-websight websight/websight-ce -n ws --create-namespace --set ingress.enabled=true
 ```
 
 > WebSight instance will be available at:
@@ -57,11 +57,12 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.readinessProbe.periodSeconds | int | `30` |  |
 | cms.readinessProbe.successThreshold | int | `1` |  |
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
+| cms.replicas | int | `2` | number of WebSight CMS CE replicas |
 | cms.resources.limits.cpu | string | `"1000m"` | WebSight CMS CE limits cpu resources |
 | cms.resources.limits.memory | string | `"4Gi"` | WebSight CMS CE limits memory resources |
 | cms.resources.requests.cpu | string | `"500m"` | WebSight CMS CE request cpu resources |
 | cms.resources.requests.memory | string | `"1Gi"` | WebSight CMS CE request memory resources |
-| ingress.enabled | bool | `true` | enables ingress |
+| ingress.enabled | bool | `false` | enables ingress |
 | ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms panel host |
 | ingress.hosts.site | string | `"luna.127.0.0.1.nip.io"` | site host |
 | mongo.image.repository | string | `"mongo"` | MongoDB Content Store image repository |
@@ -91,6 +92,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | nginx.resources.limits.memory | string | `"100Mi"` | WebSight Nginx limits memory resources |
 | nginx.resources.requests.cpu | string | `"50m"` | WebSight Nginx request cpu resources |
 | nginx.resources.requests.memory | string | `"50Mi"` | WebSight Nginx request memory resources |
+| siteRepository.storage.size | string | `"2Gi"` |  |
 
 ## Improvements (help wanted)
 
