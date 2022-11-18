@@ -1,5 +1,5 @@
 # WebSight CE Helm
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: luna-2.1.1](https://img.shields.io/badge/AppVersion-luna--2.1.1-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: luna-2.1.1](https://img.shields.io/badge/AppVersion-luna--2.1.1-informational?style=flat-square)
 
 This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -7,8 +7,9 @@ This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the H
 
 ## Quick start
 ```bash
-helm repo add websight https://websight-io.github.io/websight-ce-helm
-helm install my-websight websight/websight-ce -n ws --create-namespace --set ingress.enabled=true
+helm upgrade --install my-websight websight-ce \
+  --repo https://websight-io.github.io/websight-ce-helm \
+  --namespace ws --create-namespace --set ingress.enabled=true
 ```
 
 > WebSight instance will be available at:
@@ -57,7 +58,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.readinessProbe.periodSeconds | int | `30` |  |
 | cms.readinessProbe.successThreshold | int | `1` |  |
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
-| cms.replicas | int | `2` | number of WebSight CMS CE replicas |
+| cms.replicas | int | `1` | number of WebSight CMS CE replicas |
 | cms.resources.limits.cpu | string | `"1000m"` | WebSight CMS CE limits cpu resources |
 | cms.resources.limits.memory | string | `"4Gi"` | WebSight CMS CE limits memory resources |
 | cms.resources.requests.cpu | string | `"500m"` | WebSight CMS CE request cpu resources |
@@ -97,5 +98,6 @@ The command removes all the Kubernetes components associated with the chart and 
 ## Improvements (help wanted)
 
 - configmaps/secrets support
+- ingress for multiple hosts (e.g. luna, bulma, ...)
 - ingress support for cloud providers (`metadata.annotations`)
 - `*` use mongo from bitnami

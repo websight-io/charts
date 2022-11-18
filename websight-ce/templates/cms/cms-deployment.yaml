@@ -46,8 +46,6 @@ spec:
               memory: {{ .Values.cms.resources.limits.memory }}
               cpu: {{ .Values.cms.resources.limits.cpu }}
           volumeMounts:
-            - mountPath: /websight/logs
-              name: cms-logs
             - mountPath: /websight/docroot
               name: site-repository
           {{- if .Values.cms.livenessProbe.enabled }}
@@ -76,9 +74,6 @@ spec:
           {{- end }}
       restartPolicy: Always
       volumes:
-        - name: cms-logs
-          persistentVolumeClaim:
-            claimName: {{ include "websight-ce.fullname" . }}-cms-logs
         - name: site-repository
           persistentVolumeClaim:
             claimName: {{ include "websight-ce.fullname" . }}-site-repository

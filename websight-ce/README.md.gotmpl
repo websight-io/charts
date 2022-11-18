@@ -7,8 +7,9 @@
 
 ## Quick start
 ```bash
-helm repo add websight https://websight-io.github.io/websight-ce-helm
-helm install my-websight websight/websight-ce -n ws --create-namespace --set ingress.enabled=true
+helm upgrade --install my-websight websight-ce \
+  --repo https://websight-io.github.io/websight-ce-helm \
+  --namespace ws --create-namespace --set ingress.enabled=true
 ```
 
 > WebSight instance will be available at: 
@@ -47,5 +48,6 @@ The command removes all the Kubernetes components associated with the chart and 
 ## Improvements (help wanted)
 
 - configmaps/secrets support
+- ingress for multiple hosts (e.g. luna, bulma, ...)
 - ingress support for cloud providers (`metadata.annotations`)
 - `*` use mongo from bitnami

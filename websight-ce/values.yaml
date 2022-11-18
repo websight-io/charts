@@ -12,7 +12,7 @@ cms:
     # -- WebSight CMS CE project image tag
     tag: luna-2.1.1
   # -- number of WebSight CMS CE replicas
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       # -- WebSight CMS CE request memory resources
