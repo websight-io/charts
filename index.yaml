@@ -3,6 +3,17 @@ entries:
   websight-ce:
   - apiVersion: v2
     appVersion: luna-2.1.1
+    created: "2022-11-18T09:48:24.398570228Z"
+    description: This chart bootstraps WebSight CE deployment on a Kubernetes cluster
+      using the Helm package manager.
+    digest: d926813f2291e65500da82d92dd54c980b34fb521fa10a58858782b5031f3502
+    name: websight-ce
+    type: application
+    urls:
+    - https://github.com/websight-io/websight-ce-helm/releases/download/websight-ce-0.4.0/websight-ce-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: luna-2.1.1
     created: "2022-11-17T13:55:53.960563024Z"
     description: This chart bootstraps WebSight CE deployment on a Kubernetes cluster
       using the Helm package manager.
@@ -34,4 +45,4 @@ entries:
     urls:
     - https://github.com/websight-io/websight-ce-helm/releases/download/websight-ce-0.1.0/websight-ce-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-17T13:55:53.960573124Z"
+generated: "2022-11-18T09:48:24.398589528Z"
