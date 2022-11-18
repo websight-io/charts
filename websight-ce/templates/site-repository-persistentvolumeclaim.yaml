@@ -11,10 +11,11 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
-  {{- if le (add .Values.cms.replicas .Values.nginx.replicas) 2 }}
-    - ReadWriteOnce
-  {{ else }}
+  {{- if .Values.siteRepository.rwxStorageClassName }}
     - ReadWriteMany
+  storageClassName: {{ .Values.siteRepository.rwxStorageClassName }}
+  {{ else }}
+    - ReadWriteOnce
   {{ end -}}
   resources:
     requests:

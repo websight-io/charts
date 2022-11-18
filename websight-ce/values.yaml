@@ -78,7 +78,8 @@ siteRepository:
   storage:
     # -- Site Repository volume size
     size: 2Gi
-
+  # -- (string) Configure storageClassName in case you want to use `ReadWriteMany` access mode
+  rwxStorageClassName:
 # MongoDB Content Store configuration
 mongo:
   ports:
@@ -108,6 +109,9 @@ mongo:
     timeoutSeconds: 5
     failureThreshold: 3
     successThreshold: 1
+  storage:
+    # -- MongoDB Repository volume size
+    size: 2Gi
 
 # Ingress configuration
 ingress:

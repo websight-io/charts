@@ -1,5 +1,5 @@
 # WebSight CE Helm
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: luna-2.1.1](https://img.shields.io/badge/AppVersion-luna--2.1.1-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: luna-2.1.1](https://img.shields.io/badge/AppVersion-luna--2.1.1-informational?style=flat-square)
 
 This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -79,6 +79,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.resources.limits.memory | string | `"4Gi"` | MongoDB limits memory resources |
 | mongo.resources.requests.cpu | string | `"500m"` | MongoDB request cpu resources |
 | mongo.resources.requests.memory | string | `"1Gi"` | MongoDB request memory resources |
+| mongo.storage.size | string | `"2Gi"` | MongoDB Repository volume size |
 | nginx.image.repository | string | `"public.ecr.aws/ds/websight-nginx-ce"` | Web Server image repository |
 | nginx.image.tag | string | `"luna-2.1.1"` | Web Server project image tag |
 | nginx.livenessProbe.enabled | bool | `true` | enables WebSight Nginx pods liveness probe |
@@ -93,6 +94,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | nginx.resources.limits.memory | string | `"100Mi"` | WebSight Nginx limits memory resources |
 | nginx.resources.requests.cpu | string | `"50m"` | WebSight Nginx request cpu resources |
 | nginx.resources.requests.memory | string | `"50Mi"` | WebSight Nginx request memory resources |
+| siteRepository.rwxStorageClassName | string | `nil` | Configure storageClassName in case you want to use `ReadWriteMany` access mode |
 | siteRepository.storage.size | string | `"2Gi"` | Site Repository volume size |
 
 ## Improvements (help wanted)
