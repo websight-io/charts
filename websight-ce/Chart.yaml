@@ -3,4 +3,4 @@ name: websight-ce
 description: This chart bootstraps WebSight CE deployment on a Kubernetes cluster using the Helm package manager.
 type: application
 version: 0.5.0
-appVersion: "luna-2.1.1"
+appVersion: "0.5.0"
