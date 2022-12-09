@@ -13,6 +13,8 @@ cms:
     tag: luna-2.1.1
   # -- number of WebSight CMS CE replicas
   replicas: 1
+  # 1 second - background read, 1 second - background write, ~1 second - processing
+  sessionAffinityTimeout: 3
   resources:
     requests:
       # -- WebSight CMS CE request memory resources
