@@ -18,3 +18,7 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "websight-ce.name" . }}-cms
     app.kubernetes.io/instance: {{ .Release.Name }}-cms
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{ .Values.cms.sessionAffinityTimeout }}
