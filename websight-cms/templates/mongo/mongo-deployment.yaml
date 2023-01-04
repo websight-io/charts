@@ -26,10 +26,10 @@ spec:
     spec:
       containers:
         - env:
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              value: mongoadmin
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: mongoadmin
+            {{- range $k, $v := .Values.mongo.env }}
+            - name: {{ $v.name }}
+              value: {{ $v.value | quote }}
+            {{- end }}
           image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag }}"
           imagePullPolicy: {{ .Values.mongo.image.pullPolicy }}
           name: mongo

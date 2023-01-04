@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -48,6 +48,7 @@ The command removes all the Kubernetes components associated with the chart and 
 ### Parameters
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| cms.env | list | `[{"name":"LEASE_CHECK_MODE","value":"LENIENT"},{"name":"WS_ADMIN_USERNAME","value":"wsadmin"}]` | WebSight CMS environment variables |
 | cms.image.pullPolicy | string | `"IfNotPresent"` | WebSight CMS project image pull policy |
 | cms.image.repository | string | `"public.ecr.aws/ds/websight-cms-starter"` | WebSight CMS project image repository |
 | cms.image.tag | string | `"1.6.0"` | WebSight CMS project image tag |
@@ -72,6 +73,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | ingress.enabled | bool | `false` | enables ingress |
 | ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms panel host |
 | ingress.hosts.sites | list | `["luna.127.0.0.1.nip.io","bulma-personal-template.127.0.0.1.nip.io","no-code.luna.127.0.0.1.nip.io"]` | demo sites hosts |
+| mongo.env | list | `[{"name":"MONGO_INITDB_ROOT_PASSWORD","value":"mongoadmin"},{"name":"MONGO_INITDB_ROOT_USERNAME","value":"mongoadmin"}]` | MongoDB Content Store environment variables |
 | mongo.image.pullPolicy | string | `"IfNotPresent"` | MongoDB Content Store image pull policy |
 | mongo.image.repository | string | `"mongo"` | MongoDB Content Store image repository |
 | mongo.image.tag | string | `"4.4.6"` | MongoDB Content Store image tag |
@@ -88,6 +90,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.resources.requests.memory | string | `"1Gi"` | MongoDB request memory resources |
 | mongo.storage.size | string | `"2Gi"` | MongoDB Repository volume size |
 | nginx.enabled | bool | `true` | enables Web Server |
+| nginx.env | list | `[]` | WebSight Nginx environment variables |
 | nginx.image.pullPolicy | string | `"IfNotPresent"` | Web Server image pull policy |
 | nginx.image.repository | string | `"public.ecr.aws/ds/websight-nginx-starter"` | Web Server image repository |
 | nginx.image.tag | string | `"1.6.0"` | Web Server project image tag |

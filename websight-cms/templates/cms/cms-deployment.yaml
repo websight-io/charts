@@ -26,14 +26,14 @@ spec:
     spec:
       containers:
         - env:
-            - name: LEASE_CHECK_MODE
-              value: LENIENT
             - name: MONGODB_HOST
               value: {{ include "websight-cms.fullname" . }}-mongo
             - name: MONGODB_PORT
               value: "{{ .Values.mongo.ports.service }}"
-            - name: WS_ADMIN_USERNAME
-              value: wsadmin
+            {{- range $k, $v := .Values.cms.env }}
+            - name: {{ $v.name }}
+              value: {{ $v.value | quote }}
+            {{- end }}
           image: "{{ .Values.cms.image.repository }}:{{ .Values.cms.image.tag }}"
           imagePullPolicy: {{ .Values.cms.image.pullPolicy }}
           name: cms

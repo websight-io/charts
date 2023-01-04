@@ -29,6 +29,11 @@ spec:
         - image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
           imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
           name: nginx
+          env:
+            {{- range $k, $v := .Values.nginx.env }}
+            - name: {{ $v.name }}
+              value: {{ $v.value | quote }}
+            {{- end }}
           ports:
             - containerPort: 80
           resources:

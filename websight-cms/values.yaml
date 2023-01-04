@@ -15,6 +15,12 @@ cms:
     pullPolicy: IfNotPresent
   # -- number of WebSight CMS replicas
   replicas: 1
+  # -- WebSight CMS environment variables
+  env:
+    - name: LEASE_CHECK_MODE
+      value: LENIENT
+    - name: WS_ADMIN_USERNAME
+      value: wsadmin
   resources:
     requests:
       # -- WebSight CMS request memory resources
@@ -59,6 +65,8 @@ nginx:
     pullPolicy: IfNotPresent
   # -- number of Web Server replicas
   replicas: 2
+  # -- WebSight Nginx environment variables
+  env: []
   resources:
     requests:
       # -- WebSight Nginx request memory resources
@@ -100,6 +108,12 @@ mongo:
     tag: 4.4.6
     # -- MongoDB Content Store image pull policy
     pullPolicy: IfNotPresent
+  # -- MongoDB Content Store environment variables
+  env:
+    - name: MONGO_INITDB_ROOT_PASSWORD
+      value: mongoadmin
+    - name: MONGO_INITDB_ROOT_USERNAME
+      value: mongoadmin
   resources:
     requests:
       # -- MongoDB request memory resources
