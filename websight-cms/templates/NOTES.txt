@@ -6,7 +6,10 @@ Your WebSight CE instance is starting...
 {{- if .Values.ingress.enabled }}
 WebSight instance will be available at:{{ ` ` }}
  - CMS Panel: http://{{ .Values.ingress.hosts.cms }}
- - Demo site: http://{{ .Values.ingress.hosts.site }}
+ - Demo sites:
+   {{- range .Values.ingress.hosts.sites }}
+   - http://{{ . }}
+   {{- end }}
 {{- end }}
 
 Happy WebSight helming!

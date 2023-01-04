@@ -1,31 +1,31 @@
-# Default values for websight-ce.
+# Default values for websight-cms.
 # This is a YAML-formatted file.
 
-# WebSight CMS CE configuration
+# WebSight CMS configuration
 cms:
   ports:
     # -- CMS Panel port
     panel: 8080
   image: 
-    # -- WebSight CMS CE project image repository
-    repository: public.ecr.aws/ds/websight-cms-ce
-    # -- WebSight CMS CE project image tag
-    tag: luna-2.1.1
-  # -- number of WebSight CMS CE replicas
+    # -- WebSight CMS project image repository
+    repository: public.ecr.aws/ds/websight-cms-starter
+    # -- WebSight CMS project image tag
+    tag: 1.6.0
+  # -- number of WebSight CMS replicas
   replicas: 1
   resources:
     requests:
-      # -- WebSight CMS CE request memory resources
+      # -- WebSight CMS request memory resources
       memory: 1Gi
-      # -- WebSight CMS CE request cpu resources
+      # -- WebSight CMS request cpu resources
       cpu: 500m
     limits:
-      # -- WebSight CMS CE limits memory resources
+      # -- WebSight CMS limits memory resources
       memory: 4Gi
-      # -- WebSight CMS CE limits cpu resources
+      # -- WebSight CMS limits cpu resources
       cpu: 1000m
   livenessProbe:
-    # -- enables WebSight CMS CE pods liveness probe
+    # -- enables WebSight CMS pods liveness probe
     enabled: true
     initialDelaySeconds: 30
     periodSeconds: 10
@@ -33,7 +33,7 @@ cms:
     failureThreshold: 3
     successThreshold: 1
   readinessProbe:
-    # -- enables WebSight CMS CE pods readiness probe
+    # -- enables WebSight CMS pods readiness probe
     enabled: true
     initialDelaySeconds: 30
     periodSeconds: 30
@@ -43,14 +43,16 @@ cms:
 
 # Web Server (Nginx) configuration
 nginx:
+  # -- enables Web Server
+  enabled: true
   ports:
     # -- Nginx port
     http: 80
   image: 
     # -- Web Server image repository
-    repository: public.ecr.aws/ds/websight-nginx-ce
+    repository: public.ecr.aws/ds/websight-nginx-starter
     # -- Web Server project image tag
-    tag: luna-2.1.1
+    tag: 1.6.0
   # -- number of Web Server replicas
   replicas: 2
   resources:
@@ -75,6 +77,8 @@ nginx:
 
 # Site Repository volume configuration
 siteRepository:
+  # -- enables Site Repository volume
+  enabled: true
   storage:
     # -- Site Repository volume size
     size: 2Gi
@@ -120,5 +124,8 @@ ingress:
   hosts:
     # -- cms panel host
     cms: "cms.127.0.0.1.nip.io"
-    # -- site host
-    site: "luna.127.0.0.1.nip.io"
+    # -- demo sites hosts
+    sites: 
+      - "luna.127.0.0.1.nip.io"
+      - "bulma-personal-template.127.0.0.1.nip.io"
+      - "no-code.luna.127.0.0.1.nip.io"

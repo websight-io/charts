@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "websight-ce.fullname" . }}-cms
+  name: {{ include "websight-cms.fullname" . }}-cms
   labels:
-    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-cms
+    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
     app.kubernetes.io/instance: {{ .Release.Name }}-cms
     app.kubernetes.io/version: {{ .Values.cms.image.tag }}
     app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
@@ -16,5 +16,5 @@ spec:
     - port: {{ .Values.cms.ports.panel }}
       targetPort: 8080
   selector:
-    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-cms
+    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
     app.kubernetes.io/instance: {{ .Release.Name }}-cms

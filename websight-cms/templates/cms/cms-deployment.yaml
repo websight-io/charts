@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "websight-ce.fullname" . }}-cms
+  name: {{ include "websight-cms.fullname" . }}-cms
   labels:
-    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-cms
+    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
     app.kubernetes.io/instance: {{ .Release.Name }}-cms
     app.kubernetes.io/version: {{ .Values.cms.image.tag }}
     app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
@@ -14,14 +14,14 @@ spec:
   replicas: {{ .Values.cms.replicas }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "websight-ce.name" . }}-cms
+      app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
       app.kubernetes.io/instance: {{ .Release.Name }}-cms
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "websight-ce.name" . }}-cms
+        app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
         app.kubernetes.io/instance: {{ .Release.Name }}-cms
     spec:
       containers:
@@ -29,7 +29,7 @@ spec:
             - name: LEASE_CHECK_MODE
               value: LENIENT
             - name: MONGODB_HOST
-              value: {{ include "websight-ce.fullname" . }}-mongo
+              value: {{ include "websight-cms.fullname" . }}-mongo
             - name: MONGODB_PORT
               value: "{{ .Values.mongo.ports.service }}"
             - name: WS_ADMIN_USERNAME
@@ -45,9 +45,11 @@ spec:
             limits:
               memory: {{ .Values.cms.resources.limits.memory }}
               cpu: {{ .Values.cms.resources.limits.cpu }}
+          {{- if .Values.siteRepository.enabled }}
           volumeMounts:
             - mountPath: /websight/docroot
               name: site-repository
+          {{- end }}
           {{- if .Values.cms.livenessProbe.enabled }}
           livenessProbe:
             initialDelaySeconds: {{ .Values.cms.livenessProbe.initialDelaySeconds }}
@@ -73,8 +75,10 @@ spec:
               scheme: HTTP
           {{- end }}
       restartPolicy: Always
+      {{- if .Values.siteRepository.enabled }}
       volumes:
         - name: site-repository
           persistentVolumeClaim:
-            claimName: {{ include "websight-ce.fullname" . }}-site-repository
+            claimName: {{ include "websight-cms.fullname" . }}-site-repository
+      {{- end }}
 status: {}

@@ -1,9 +1,10 @@
+{{- if .Values.siteRepository.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "websight-ce.fullname" . }}-site-repository
+  name: {{ include "websight-cms.fullname" . }}-site-repository
   labels:
-    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-site-repository
+    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-site-repository
     app.kubernetes.io/instance: {{ .Release.Name }}-site-repository
     app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
     app.kubernetes.io/component: "site-repository"
@@ -20,3 +21,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.siteRepository.storage.size }}
+{{- end }}

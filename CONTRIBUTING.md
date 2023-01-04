@@ -22,4 +22,4 @@ If you make contributions to our repositories on behalf of your company, we will
 
 ## Documentation
 
-We generate `README.md` file from `websight-ce/README.md.gotmpl` using `generate-docs.sh` script.
+We generate `README.md` file from `websight-cms/README.md.gotmpl` using `generate-docs.sh` script.

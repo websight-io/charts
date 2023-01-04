@@ -1,9 +1,10 @@
+{{- if .Values.nginx.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "websight-ce.fullname" . }}-nginx
+  name: {{ include "websight-cms.fullname" . }}-nginx
   labels:
-    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-nginx
+    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-nginx
     app.kubernetes.io/instance: {{ .Release.Name }}-nginx
     app.kubernetes.io/version: {{ .Values.nginx.image.tag }}
     app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
@@ -15,5 +16,6 @@ spec:
     - port: {{ .Values.nginx.ports.http }}
       targetPort: 80
   selector:
-    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-nginx
+    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-nginx
     app.kubernetes.io/instance: {{ .Release.Name }}-nginx
+{{- end }}
