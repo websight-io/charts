@@ -27,6 +27,7 @@ spec:
     spec:
       containers:
         - image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
+          imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
           name: nginx
           ports:
             - containerPort: 80

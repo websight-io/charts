@@ -35,6 +35,7 @@ spec:
             - name: WS_ADMIN_USERNAME
               value: wsadmin
           image: "{{ .Values.cms.image.repository }}:{{ .Values.cms.image.tag }}"
+          imagePullPolicy: {{ .Values.cms.image.pullPolicy }}
           name: cms
           ports:
             - containerPort: 8080

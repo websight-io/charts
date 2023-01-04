@@ -31,6 +31,7 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               value: mongoadmin
           image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag }}"
+          imagePullPolicy: {{ .Values.mongo.image.pullPolicy }}
           name: mongo
           ports:
             - containerPort: 27017

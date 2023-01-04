@@ -11,6 +11,8 @@ cms:
     repository: public.ecr.aws/ds/websight-cms-starter
     # -- WebSight CMS project image tag
     tag: 1.6.0
+    # -- WebSight CMS project image pull policy
+    pullPolicy: IfNotPresent
   # -- number of WebSight CMS replicas
   replicas: 1
   resources:
@@ -53,6 +55,8 @@ nginx:
     repository: public.ecr.aws/ds/websight-nginx-starter
     # -- Web Server project image tag
     tag: 1.6.0
+    # -- Web Server image pull policy
+    pullPolicy: IfNotPresent
   # -- number of Web Server replicas
   replicas: 2
   resources:
@@ -94,6 +98,8 @@ mongo:
     repository: mongo
     # -- MongoDB Content Store image tag
     tag: 4.4.6
+    # -- MongoDB Content Store image pull policy
+    pullPolicy: IfNotPresent
   resources:
     requests:
       # -- MongoDB request memory resources
