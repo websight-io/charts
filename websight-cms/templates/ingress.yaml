@@ -2,11 +2,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "websight-ce.fullname" . }}-ingress
+  name: {{ include "websight-cms.fullname" . }}-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
   labels:
-    app.kubernetes.io/name: {{ include "websight-ce.name" . }}-ingress
+    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-ingress
     app.kubernetes.io/instance: {{ .Release.Name }}-ingress
     app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
     app.kubernetes.io/component: "ingress"
@@ -21,17 +21,19 @@ spec:
         path: "/"
         backend:
           service:
-            name: {{ include "websight-ce.fullname" . }}-cms
+            name: {{ include "websight-cms.fullname" . }}-cms
             port:
               number: 8080
-  - host: {{ .Values.ingress.hosts.site }}
+  {{- range .Values.ingress.hosts.sites }}
+  - host: {{ . }}
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: {{ include "websight-ce.fullname" . }}-nginx
+            name: {{ include "websight-cms.fullname" $ }}-nginx
             port:
               number: 80
+  {{- end }}  
 {{- end }}
