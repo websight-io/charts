@@ -59,6 +59,17 @@ entries:
   websight-cms:
   - apiVersion: v2
     appVersion: 1.6.0
+    created: "2023-01-05T09:53:52.601191886Z"
+    description: This chart bootstraps WebSight CMS deployment on a Kubernetes cluster
+      using the Helm package manager.
+    digest: 1a21522c6f61229e467b34191e11f06d92b9b07e0d0f2b0db81c0cd11fa8dd4a
+    name: websight-cms
+    type: application
+    urls:
+    - https://github.com/websight-io/charts/releases/download/websight-cms-1.2.0/websight-cms-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
+    appVersion: 1.6.0
     created: "2023-01-04T15:19:14.59963818Z"
     description: This chart bootstraps WebSight CMS deployment on a Kubernetes cluster
       using the Helm package manager.
@@ -90,4 +101,4 @@ entries:
     urls:
     - https://github.com/websight-io/charts/releases/download/websight-cms-1.0.0/websight-cms-1.0.0.tgz
     version: 1.0.0
-generated: "2023-01-04T15:19:14.59965398Z"
+generated: "2023-01-05T09:53:52.601217786Z"
