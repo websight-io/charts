@@ -25,7 +25,10 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}-cms
     spec:
       containers:
-        - env:
+        - name: cms
+          image: "{{ .Values.cms.image.repository }}:{{ .Values.cms.image.tag }}"
+          imagePullPolicy: {{ .Values.cms.image.pullPolicy }}
+          env:
             - name: MONGODB_HOST
               value: {{ include "websight-cms.fullname" . }}-mongo
             - name: MONGODB_PORT
@@ -34,9 +37,11 @@ spec:
             - name: {{ $v.name }}
               value: {{ $v.value | quote }}
             {{- end }}
-          image: "{{ .Values.cms.image.repository }}:{{ .Values.cms.image.tag }}"
-          imagePullPolicy: {{ .Values.cms.image.pullPolicy }}
-          name: cms
+          envFrom:
+          {{- range .Values.cms.envsFrom }}
+          - configMapRef:
+              name: {{ $.Release.Name }}-{{ . }}
+          {{- end }}
           ports:
             - containerPort: 8080
           resources:

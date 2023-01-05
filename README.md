@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -49,6 +49,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | cms.env | list | `[{"name":"LEASE_CHECK_MODE","value":"LENIENT"},{"name":"WS_ADMIN_USERNAME","value":"wsadmin"}]` | WebSight CMS environment variables |
+| cms.envsFrom | list | `[]` | List of WebSight CMS config maps that will work with `configMapRef` |
 | cms.image.pullPolicy | string | `"IfNotPresent"` | WebSight CMS project image pull policy |
 | cms.image.repository | string | `"public.ecr.aws/ds/websight-cms-starter"` | WebSight CMS project image repository |
 | cms.image.tag | string | `"1.6.0"` | WebSight CMS project image tag |

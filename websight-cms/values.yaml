@@ -21,6 +21,8 @@ cms:
       value: LENIENT
     - name: WS_ADMIN_USERNAME
       value: wsadmin
+  # -- List of WebSight CMS config maps that will work with `configMapRef`
+  envsFrom: []
   resources:
     requests:
       # -- WebSight CMS request memory resources
