@@ -12,4 +12,8 @@ WebSight instance will be available at:{{ ` ` }}
    {{- end }}
 {{- end }}
 
+{{- if .Values.cms.customAdminSecret }}
+Custom password and username for admin were set in the {{ .Release.Name }}-{{ .Values.cms.customAdminSecret }} secret.
+{{- end }}
+
 Happy WebSight helming!
