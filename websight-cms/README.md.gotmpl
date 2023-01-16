@@ -50,8 +50,41 @@ The command removes all the Kubernetes components associated with the chart and 
 
 {{ template "chart.requirementsSection" . }}
 
+### Configuring custom admin username and password
+
+> Important!!!
+>
+> Setting custom username and password for the CMS administrator is possible only during the first installation!
+
+By default, the CMS deployment runs an admin panel instance with default `wsadmin/wsadmin` credentials. To set a custom username and password, use Secret named `<Release name>-your-name`
+with `WS_ADMIN_USERNAME` and `WS_ADMIN_PASSWORD` values configured and configure `cms.envsFromSecret` and `cms.customAdminSecret` accordingly.
+
+Example:
+
+> cms-secret.yaml
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ "{{ $.Release.Name }}" }}-cms-admin
+type: Opaque
+stringData:
+  WS_ADMIN_USERNAME: myadmin # WebSight CMS reads this env to set up the admin username during the first launch
+data:
+  WS_ADMIN_PASSWORD: c2VjcmV0UGFzcw== #base64 encoded
+immutable: true
+```
+
+> values.yaml
+```yaml
+cms:
+  envsFromSecret:
+    - cms-admin                # add all `<Release name>-cms-admin` secrets as env variables (this is how CMS reads custom username)
+  customAdminSecret: cms-admin # mount `<Release name>-cms-admin` secret for CMS pod and add value from `WS_ADMIN_PASSWORD` key as a secret file (this is how CMS reads custom password)
+```
+
+
 ## Improvements (help wanted)
 
-- configmaps/secrets support
 - ingress support for cloud providers (`metadata.annotations`)
-- `*` use mongo from bitnami
+- `*` use Community MongoDB Operator instead of custom mongo chart

@@ -38,7 +38,11 @@ spec:
               value: {{ $v.value | quote }}
             {{- end }}
           envFrom:
-          {{- range .Values.cms.envsFrom }}
+          {{- range .Values.cms.envsFromSecret }}
+          - secretRef:
+              name: {{ $.Release.Name }}-{{ . }}
+          {{- end }}
+          {{- range .Values.cms.envsFromConfig }}
           - configMapRef:
               name: {{ $.Release.Name }}-{{ . }}
           {{- end }}
@@ -51,8 +55,13 @@ spec:
             limits:
               memory: {{ .Values.cms.resources.limits.memory }}
               cpu: {{ .Values.cms.resources.limits.cpu }}
-          {{- if .Values.siteRepository.enabled }}
           volumeMounts:
+          {{- if .Values.cms.customAdminSecret }}
+            - name: admin-password
+              mountPath: /websight/resources/secrets
+              readOnly: true
+          {{- end }}
+          {{- if .Values.siteRepository.enabled }}
             - mountPath: /websight/docroot
               name: site-repository
           {{- end }}
@@ -81,10 +90,18 @@ spec:
               scheme: HTTP
           {{- end }}
       restartPolicy: Always
-      {{- if .Values.siteRepository.enabled }}
       volumes:
+      {{- if .Values.siteRepository.enabled }}
         - name: site-repository
           persistentVolumeClaim:
             claimName: {{ include "websight-cms.fullname" . }}-site-repository
+      {{- end }}
+      {{- if .Values.cms.customAdminSecret }}
+        - name: admin-password
+          secret:
+            secretName: {{ $.Release.Name }}-{{ .Values.cms.customAdminSecret }}
+            items:
+              - key: WS_ADMIN_PASSWORD
+                path: admin.password
       {{- end }}
 status: {}

@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -48,8 +48,10 @@ The command removes all the Kubernetes components associated with the chart and 
 ### Parameters
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| cms.env | list | `[{"name":"LEASE_CHECK_MODE","value":"LENIENT"},{"name":"WS_ADMIN_USERNAME","value":"wsadmin"}]` | WebSight CMS environment variables |
-| cms.envsFrom | list | `[]` | List of WebSight CMS config maps that will work with `configMapRef` |
+| cms.customAdminSecret | string | `nil` | Name of the secret (without release name prefix) where custom admin password is stored under `WS_ADMIN_PASSWORD` key |
+| cms.env | list | `[{"name":"LEASE_CHECK_MODE","value":"LENIENT"}]` | WebSight CMS environment variables |
+| cms.envsFromConfig | list | `[]` | List of WebSight CMS config maps that will work with `configMapRef` |
+| cms.envsFromSecret | list | `[]` | List of WebSight CMS secrets that will work with `secretRef` |
 | cms.image.pullPolicy | string | `"IfNotPresent"` | WebSight CMS project image pull policy |
 | cms.image.repository | string | `"public.ecr.aws/ds/websight-cms-starter"` | WebSight CMS project image repository |
 | cms.image.tag | string | `"1.6.0"` | WebSight CMS project image tag |
@@ -111,8 +113,40 @@ The command removes all the Kubernetes components associated with the chart and 
 | siteRepository.rwxStorageClassName | string | `nil` | Configure storageClassName in case you want to use `ReadWriteMany` access mode |
 | siteRepository.storage.size | string | `"2Gi"` | Site Repository volume size |
 
+### Configuring custom admin username and password
+
+> Important!!!
+>
+> Setting custom username and password for the CMS administrator is possible only during the first installation!
+
+By default, the CMS deployment runs an admin panel instance with default `wsadmin/wsadmin` credentials. To set a custom username and password, use Secret named `<Release name>-your-name`
+with `WS_ADMIN_USERNAME` and `WS_ADMIN_PASSWORD` values configured and configure `cms.envsFromSecret` and `cms.customAdminSecret` accordingly.
+
+Example:
+
+> cms-secret.yaml
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $.Release.Name }}-cms-admin
+type: Opaque
+stringData:
+  WS_ADMIN_USERNAME: myadmin # WebSight CMS reads this env to set up the admin username during the first launch
+data:
+  WS_ADMIN_PASSWORD: c2VjcmV0UGFzcw== #base64 encoded
+immutable: true
+```
+
+> values.yaml
+```yaml
+cms:
+  envsFromSecret:
+    - cms-admin                # add all `<Release name>-cms-admin` secrets as env variables (this is how CMS reads custom username)
+  customAdminSecret: cms-admin # mount `<Release name>-cms-admin` secret for CMS pod and add value from `WS_ADMIN_PASSWORD` key as a secret file (this is how CMS reads custom password)
+```
+
 ## Improvements (help wanted)
 
-- configmaps/secrets support
 - ingress support for cloud providers (`metadata.annotations`)
-- `*` use mongo from bitnami
+- `*` use Community MongoDB Operator instead of custom mongo chart
