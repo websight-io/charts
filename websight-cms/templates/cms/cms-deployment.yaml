@@ -104,4 +104,7 @@ spec:
               - key: WS_ADMIN_PASSWORD
                 path: admin.password
       {{- end }}
+      {{- if .Values.cms.nodeSelector }}
+      nodeSelector: {{- .Values.cms.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
 status: {}

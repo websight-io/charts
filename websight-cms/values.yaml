@@ -52,6 +52,8 @@ cms:
     timeoutSeconds: 10
     failureThreshold: 3
     successThreshold: 1
+  # -- (object) CMS node selector
+  nodeSelector:
 
 # Web Server (Nginx) configuration
 nginx:
@@ -90,6 +92,8 @@ nginx:
     timeoutSeconds: 1
     failureThreshold: 6
     successThreshold: 1
+  # -- (object) WebSight Nginx node selector
+  nodeSelector:
 
 # Site Repository volume configuration
 siteRepository:
@@ -140,6 +144,8 @@ mongo:
   storage:
     # -- MongoDB Repository volume size
     size: 2Gi
+  # -- (object) MongoDB node selector
+  nodeSelector:
 
 # Ingress configuration
 ingress:
