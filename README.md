@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
+![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -61,6 +61,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.livenessProbe.periodSeconds | int | `10` |  |
 | cms.livenessProbe.successThreshold | int | `1` |  |
 | cms.livenessProbe.timeoutSeconds | int | `3` |  |
+| cms.nodeSelector | object | `nil` | CMS node selector |
 | cms.ports.panel | int | `8080` | CMS Panel port |
 | cms.readinessProbe.enabled | bool | `true` | enables WebSight CMS pods readiness probe |
 | cms.readinessProbe.failureThreshold | int | `3` |  |
@@ -86,6 +87,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.livenessProbe.periodSeconds | int | `10` |  |
 | mongo.livenessProbe.successThreshold | int | `1` |  |
 | mongo.livenessProbe.timeoutSeconds | int | `5` |  |
+| mongo.nodeSelector | object | `nil` | MongoDB node selector |
 | mongo.ports.service | int | `27017` | MongoDB Content Store port |
 | mongo.resources.limits.cpu | string | `"1000m"` | MongoDB limits cpu resources |
 | mongo.resources.limits.memory | string | `"4Gi"` | MongoDB limits memory resources |
@@ -103,6 +105,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | nginx.livenessProbe.periodSeconds | int | `5` |  |
 | nginx.livenessProbe.successThreshold | int | `1` |  |
 | nginx.livenessProbe.timeoutSeconds | int | `1` |  |
+| nginx.nodeSelector | object | `nil` | WebSight Nginx node selector |
 | nginx.ports.http | int | `80` | Nginx port |
 | nginx.replicas | int | `2` | number of Web Server replicas |
 | nginx.resources.limits.cpu | string | `"100m"` | WebSight Nginx limits cpu resources |

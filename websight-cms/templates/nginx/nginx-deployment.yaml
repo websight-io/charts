@@ -66,4 +66,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "websight-cms.fullname" . }}-site-repository
             readOnly: true
+      {{- if .Values.nginx.nodeSelector }}
+      nodeSelector: {{- .Values.nginx.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
 {{- end }}
