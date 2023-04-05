@@ -14,7 +14,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   rules:
-  - host: {{ .Values.ingress.hosts.cms }}
+  - host: {{ tpl .Values.ingress.hosts.cms . }}
     http:
       paths:
       - pathType: ImplementationSpecific
@@ -25,7 +25,7 @@ spec:
             port:
               number: 8080
   {{- range .Values.ingress.hosts.sites }}
-  - host: {{ . }}
+  - host: {{ tpl . $ }}
     http:
       paths:
       - pathType: Prefix
