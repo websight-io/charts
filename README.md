@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
+![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -49,6 +49,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | cms.customAdminSecret | string | `nil` | Name of the secret (without release name prefix) where custom admin password is stored under `WS_ADMIN_PASSWORD` key |
+| cms.debug.enabled | bool | `true` | enables WebSight CMS debug on port 5005 |
 | cms.env | list | `[{"name":"LEASE_CHECK_MODE","value":"LENIENT"}]` | WebSight CMS environment variables |
 | cms.envsFromConfig | list | `[]` | List of WebSight CMS config maps that will work with `configMapRef` |
 | cms.envsFromSecret | list | `[]` | List of WebSight CMS secrets that will work with `secretRef` |
@@ -62,7 +63,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.livenessProbe.successThreshold | int | `1` |  |
 | cms.livenessProbe.timeoutSeconds | int | `3` |  |
 | cms.nodeSelector | object | `nil` | CMS node selector |
-| cms.ports.panel | int | `8080` | CMS Panel port |
 | cms.readinessProbe.enabled | bool | `true` | enables WebSight CMS pods readiness probe |
 | cms.readinessProbe.failureThreshold | int | `3` |  |
 | cms.readinessProbe.initialDelaySeconds | int | `30` |  |
@@ -75,7 +75,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.resources.requests.cpu | string | `"500m"` | WebSight CMS request cpu resources |
 | cms.resources.requests.memory | string | `"1Gi"` | WebSight CMS request memory resources |
 | ingress.enabled | bool | `false` | enables ingress |
-| ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms panel host |
+| ingress.hosts.cms | string | `"cms2.127.0.0.1.nip.io"` | cms panel host |
 | ingress.hosts.sites | list | `["luna.127.0.0.1.nip.io","bulma-personal-template.127.0.0.1.nip.io","no-code.luna.127.0.0.1.nip.io"]` | demo sites hosts |
 | mongo.env | list | `[{"name":"MONGO_INITDB_ROOT_PASSWORD","value":"mongoadmin"},{"name":"MONGO_INITDB_ROOT_USERNAME","value":"mongoadmin"}]` | MongoDB Content Store environment variables |
 | mongo.image.pullPolicy | string | `"IfNotPresent"` | MongoDB Content Store image pull policy |
@@ -88,7 +88,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.livenessProbe.successThreshold | int | `1` |  |
 | mongo.livenessProbe.timeoutSeconds | int | `5` |  |
 | mongo.nodeSelector | object | `nil` | MongoDB node selector |
-| mongo.ports.service | int | `27017` | MongoDB Content Store port |
 | mongo.resources.limits.cpu | string | `"1000m"` | MongoDB limits cpu resources |
 | mongo.resources.limits.memory | string | `"4Gi"` | MongoDB limits memory resources |
 | mongo.resources.requests.cpu | string | `"500m"` | MongoDB request cpu resources |
@@ -106,7 +105,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | nginx.livenessProbe.successThreshold | int | `1` |  |
 | nginx.livenessProbe.timeoutSeconds | int | `1` |  |
 | nginx.nodeSelector | object | `nil` | WebSight Nginx node selector |
-| nginx.ports.http | int | `80` | Nginx port |
 | nginx.replicas | int | `2` | number of Web Server replicas |
 | nginx.resources.limits.cpu | string | `"100m"` | WebSight Nginx limits cpu resources |
 | nginx.resources.limits.memory | string | `"100Mi"` | WebSight Nginx limits memory resources |

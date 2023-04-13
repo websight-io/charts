@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   ports:
-    - port: {{ .Values.nginx.ports.http }}
+    - port: 80
       targetPort: 80
   selector:
     app.kubernetes.io/name: {{ include "websight-cms.name" . }}-nginx

@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   ports:
-    - port: {{ .Values.mongo.ports.service }}
+    - port: 27017
       targetPort: 27017
   selector:
     app.kubernetes.io/name: {{ include "websight-cms.name" . }}-mongo

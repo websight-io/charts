@@ -3,9 +3,6 @@
 
 # WebSight CMS configuration
 cms:
-  ports:
-    # -- CMS Panel port
-    panel: 8080
   image: 
     # -- WebSight CMS project image repository
     repository: public.ecr.aws/ds/websight-cms-starter
@@ -15,6 +12,9 @@ cms:
     pullPolicy: IfNotPresent
   # -- number of WebSight CMS replicas
   replicas: 1
+  debug:
+    # -- enables WebSight CMS debug on port 5005
+    enabled: true
   # -- WebSight CMS environment variables
   env:
     - name: LEASE_CHECK_MODE
@@ -59,9 +59,6 @@ cms:
 nginx:
   # -- enables Web Server
   enabled: true
-  ports:
-    # -- Nginx port
-    http: 80
   image: 
     # -- Web Server image repository
     repository: public.ecr.aws/ds/websight-nginx-starter
@@ -106,9 +103,6 @@ siteRepository:
   rwxStorageClassName:
 # MongoDB Content Store configuration
 mongo:
-  ports:
-    # -- MongoDB Content Store port
-    service: 27017
   image: 
     # -- MongoDB Content Store image repository
     repository: mongo
@@ -153,7 +147,7 @@ ingress:
   enabled: false
   hosts:
     # -- cms panel host
-    cms: "cms.127.0.0.1.nip.io"
+    cms: "cms2.127.0.0.1.nip.io"
     # -- demo sites hosts
     sites: 
       - "luna.127.0.0.1.nip.io"
