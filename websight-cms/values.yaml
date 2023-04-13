@@ -14,7 +14,7 @@ cms:
   replicas: 1
   debug:
     # -- enables WebSight CMS debug on port 5005
-    enabled: true
+    enabled: false
   # -- WebSight CMS environment variables
   env:
     - name: LEASE_CHECK_MODE
@@ -147,7 +147,7 @@ ingress:
   enabled: false
   hosts:
     # -- cms panel host
-    cms: "cms2.127.0.0.1.nip.io"
+    cms: "cms.127.0.0.1.nip.io"
     # -- demo sites hosts
     sites: 
       - "luna.127.0.0.1.nip.io"
