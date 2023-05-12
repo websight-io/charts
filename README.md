@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
+![Version: 1.4.2](https://img.shields.io/badge/Version-1.4.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -74,6 +74,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.resources.limits.memory | string | `"4Gi"` | WebSight CMS limits memory resources |
 | cms.resources.requests.cpu | string | `"500m"` | WebSight CMS request cpu resources |
 | cms.resources.requests.memory | string | `"1Gi"` | WebSight CMS request memory resources |
+| ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
 | ingress.enabled | bool | `false` | enables ingress |
 | ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms panel host |
 | ingress.hosts.sites | list | `["luna.127.0.0.1.nip.io","bulma-personal-template.127.0.0.1.nip.io","no-code.luna.127.0.0.1.nip.io"]` | demo sites hosts |
