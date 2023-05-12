@@ -3,8 +3,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "websight-cms.fullname" . }}-ingress
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  {{- if .Values.ingress.annotations }}
+  annotations: {{- .Values.ingress.annotations | toYaml | nindent 4 }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ include "websight-cms.name" . }}-ingress
     app.kubernetes.io/instance: {{ .Release.Name }}-ingress
