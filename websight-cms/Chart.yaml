@@ -2,5 +2,5 @@ apiVersion: v2
 name: websight-cms
 description: This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 type: application
-version: 1.4.2
+version: 1.4.3
 appVersion: "1.6.0"

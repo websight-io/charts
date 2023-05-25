@@ -24,6 +24,9 @@ spec:
         app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
         app.kubernetes.io/instance: {{ .Release.Name }}-cms
     spec:
+      {{- if .Values.cms.imagePullSecrets }}
+      imagePullSecrets: {{- .Values.cms.imagePullSecrets | toYaml | nindent 8 }}
+      {{- end }}
       containers:
         - name: cms
           image: "{{ .Values.cms.image.repository }}:{{ .Values.cms.image.tag }}"
