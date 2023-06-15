@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/part-of: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.mongo.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "websight-cms.name" . }}-mongo

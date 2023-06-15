@@ -112,6 +112,8 @@ mongo:
     tag: 4.4.6
     # -- MongoDB Content Store image pull policy
     pullPolicy: IfNotPresent
+  # -- number of MongoDB replicas - valid values are `0` or `1`, do not set above `1`
+  replicas: 1
   # -- MongoDB Content Store environment variables
   env:
     - name: MONGO_INITDB_ROOT_PASSWORD

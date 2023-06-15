@@ -90,6 +90,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.livenessProbe.successThreshold | int | `1` |  |
 | mongo.livenessProbe.timeoutSeconds | int | `5` |  |
 | mongo.nodeSelector | object | `nil` | MongoDB node selector |
+| mongo.replicas | int | `1` | number of MongoDB replicas - valid values are `0` or `1`, do not set above `1` |
 | mongo.resources.limits.cpu | string | `"1000m"` | MongoDB limits cpu resources |
 | mongo.resources.limits.memory | string | `"4Gi"` | MongoDB limits memory resources |
 | mongo.resources.requests.cpu | string | `"500m"` | MongoDB request cpu resources |
