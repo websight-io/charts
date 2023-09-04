@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.4.4](https://img.shields.io/badge/Version-1.4.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.0](https://img.shields.io/badge/AppVersion-1.19.0-informational?style=flat-square)
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.0](https://img.shields.io/badge/AppVersion-1.19.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -105,7 +105,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | nginx.image.tag | string | `"1.23.3"` | Web Server project image tag |
 | nginx.livenessProbe.enabled | bool | `true` | enables WebSight Nginx pods liveness probe |
 | nginx.livenessProbe.failureThreshold | int | `6` |  |
-| nginx.livenessProbe.initialDelaySeconds | int | `30` |  |
+| nginx.livenessProbe.initialDelaySeconds | int | `5` |  |
 | nginx.livenessProbe.periodSeconds | int | `5` |  |
 | nginx.livenessProbe.successThreshold | int | `1` |  |
 | nginx.livenessProbe.timeoutSeconds | int | `1` |  |
