@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.4.4](https://img.shields.io/badge/Version-1.4.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
+![Version: 1.4.4](https://img.shields.io/badge/Version-1.4.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.0](https://img.shields.io/badge/AppVersion-1.19.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -23,9 +23,10 @@ helm upgrade --install my-websight websight-cms \
 > WebSight instance will be available at:
 > - CMS Panel: http://cms.127.0.0.1.nip.io
 > - Demo sites:
+>   - http://kyanite.127.0.0.1.nip.io
+>   - http://luna-low-code.127.0.0.1.nip.io
 >   - http://luna.127.0.0.1.nip.io
->   - http://bulma-personal-template.127.0.0.1.nip.io
->   - http://no-code.luna.127.0.0.1.nip.io
+>   - http://luna-no-code.127.0.0.1.nip.io
 
 ### Installing the Chart
 To install the chart with the release name `my-websight` using existing domain that points to your Kubernetes cluster, run:
@@ -55,7 +56,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.envsFromSecret | list | `[]` | List of WebSight CMS secrets that will work with `secretRef` |
 | cms.image.pullPolicy | string | `"IfNotPresent"` | WebSight CMS project image pull policy |
 | cms.image.repository | string | `"public.ecr.aws/ds/websight-cms-starter"` | WebSight CMS project image repository |
-| cms.image.tag | string | `"1.6.0"` | WebSight CMS project image tag |
+| cms.image.tag | string | `nil` | WebSight CMS project image tag, overwrites value from `.Chart.appVersion` |
 | cms.imagePullSecrets | list | `[]` | cms image pull secrets |
 | cms.livenessProbe.enabled | bool | `true` | enables WebSight CMS pods liveness probe |
 | cms.livenessProbe.failureThreshold | int | `3` |  |
@@ -78,7 +79,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
 | ingress.enabled | bool | `false` | enables ingress |
 | ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms panel host |
-| ingress.hosts.sites | list | `["luna.127.0.0.1.nip.io","bulma-personal-template.127.0.0.1.nip.io","no-code.luna.127.0.0.1.nip.io"]` | demo sites hosts |
+| ingress.hosts.sites | list | `[]` | demo sites hosts, should correspond with your `nginx.customServerConfigurations` config |
 | mongo.env | list | `[{"name":"MONGO_INITDB_ROOT_PASSWORD","value":"mongoadmin"},{"name":"MONGO_INITDB_ROOT_USERNAME","value":"mongoadmin"}]` | MongoDB Content Store environment variables |
 | mongo.image.pullPolicy | string | `"IfNotPresent"` | MongoDB Content Store image pull policy |
 | mongo.image.repository | string | `"mongo"` | MongoDB Content Store image repository |
@@ -96,11 +97,12 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.resources.requests.cpu | string | `"500m"` | MongoDB request cpu resources |
 | mongo.resources.requests.memory | string | `"1Gi"` | MongoDB request memory resources |
 | mongo.storage.size | string | `"2Gi"` | MongoDB Repository volume size |
+| nginx.customServerConfigurations | list | `[]` | list of Nginx custom configs that will be atached to the container under `/etc/nginx/conf.d/` directory using `configMapRef` |
 | nginx.enabled | bool | `true` | enables Web Server |
 | nginx.env | list | `[]` | WebSight Nginx environment variables |
 | nginx.image.pullPolicy | string | `"IfNotPresent"` | Web Server image pull policy |
-| nginx.image.repository | string | `"public.ecr.aws/ds/websight-nginx-starter"` | Web Server image repository |
-| nginx.image.tag | string | `"1.6.0"` | Web Server project image tag |
+| nginx.image.repository | string | `"nginx"` | Web Server image repository |
+| nginx.image.tag | string | `"1.23.3"` | Web Server project image tag |
 | nginx.livenessProbe.enabled | bool | `true` | enables WebSight Nginx pods liveness probe |
 | nginx.livenessProbe.failureThreshold | int | `6` |  |
 | nginx.livenessProbe.initialDelaySeconds | int | `30` |  |
@@ -152,5 +154,4 @@ cms:
 
 ## Improvements (help wanted)
 
-- ingress support for cloud providers (`metadata.annotations`)
 - `*` use Community MongoDB Operator instead of custom mongo chart

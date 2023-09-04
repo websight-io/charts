@@ -1,0 +1,16 @@
+{{- if .Values.nginx.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: websight-cms-starter-nginx-example-config
+  labels:
+    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-nginx
+    app.kubernetes.io/instance: {{ .Release.Name }}-nginx
+    app.kubernetes.io/version: {{ .Values.nginx.image.tag }}
+    app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: "web-server"
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+{{ (.Files.Glob "sites-config/*.conf").AsConfig | indent 2 }}
+{{- end }}
