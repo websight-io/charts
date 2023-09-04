@@ -23,9 +23,10 @@ helm upgrade --install my-websight websight-cms \
 > WebSight instance will be available at: 
 > - CMS Panel: http://cms.127.0.0.1.nip.io
 > - Demo sites:
+>   - http://kyanite.127.0.0.1.nip.io
+>   - http://luna-low-code.127.0.0.1.nip.io
 >   - http://luna.127.0.0.1.nip.io
->   - http://bulma-personal-template.127.0.0.1.nip.io
->   - http://no-code.luna.127.0.0.1.nip.io
+>   - http://luna-no-code.127.0.0.1.nip.io
 
 ### Installing the Chart
 To install the chart with the release name `my-websight` using existing domain that points to your Kubernetes cluster, run: 
@@ -86,5 +87,4 @@ cms:
 
 ## Improvements (help wanted)
 
-- ingress support for cloud providers (`metadata.annotations`)
 - `*` use Community MongoDB Operator instead of custom mongo chart

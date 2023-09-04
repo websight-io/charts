@@ -29,7 +29,7 @@ spec:
       {{- end }}
       containers:
         - name: cms
-          image: "{{ .Values.cms.image.repository }}:{{ .Values.cms.image.tag }}"
+          image: "{{ .Values.cms.image.repository }}:{{ default .Chart.AppVersion .Values.cms.image.tag }}"
           imagePullPolicy: {{ .Values.cms.image.pullPolicy }}
           env:
             - name: MONGODB_HOST

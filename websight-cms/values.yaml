@@ -6,8 +6,8 @@ cms:
   image: 
     # -- WebSight CMS project image repository
     repository: public.ecr.aws/ds/websight-cms-starter
-    # -- WebSight CMS project image tag
-    tag: 1.6.0
+    # -- WebSight CMS project image tag, overwrites value from `.Chart.appVersion`
+    tag:
     # -- WebSight CMS project image pull policy
     pullPolicy: IfNotPresent
   # -- cms image pull secrets
@@ -63,15 +63,31 @@ nginx:
   enabled: true
   image: 
     # -- Web Server image repository
-    repository: public.ecr.aws/ds/websight-nginx-starter
+    repository: nginx
     # -- Web Server project image tag
-    tag: 1.6.0
+    tag: 1.23.3
     # -- Web Server image pull policy
     pullPolicy: IfNotPresent
   # -- number of Web Server replicas
   replicas: 2
   # -- WebSight Nginx environment variables
   env: []
+  # -- list of Nginx custom configs that will be atached to the container under `/etc/nginx/conf.d/` directory using `configMapRef`
+  customServerConfigurations:
+    # @ignored in generated docs
+    - configMapName: websight-cms-starter-nginx-example-config
+      # @ignored in generated docs
+      configNames:
+        - key: healthcheck.conf
+          path: healthcheck.conf
+        - key: kyanite-site.conf
+          path: kyanite-site.conf
+        - key: lowcodeluna-site.conf
+          path: lowcodeluna-site.conf
+        - key: luna-site.conf
+          path: luna-site.conf
+        - key: nocodeluna-site.conf
+          path: nocodeluna-site.conf
   resources:
     requests:
       # -- WebSight Nginx request memory resources
@@ -86,7 +102,7 @@ nginx:
   livenessProbe:
     # -- enables WebSight Nginx pods liveness probe
     enabled: true
-    initialDelaySeconds: 30
+    initialDelaySeconds: 5
     periodSeconds: 5
     timeoutSeconds: 1
     failureThreshold: 6
@@ -103,6 +119,7 @@ siteRepository:
     size: 2Gi
   # -- (string) Configure storageClassName in case you want to use `ReadWriteMany` access mode
   rwxStorageClassName:
+
 # MongoDB Content Store configuration
 mongo:
   image: 
@@ -145,7 +162,7 @@ mongo:
   # -- (object) MongoDB node selector
   nodeSelector:
 
-# Ingress configuration
+# Ingress configuration for local development
 ingress:
   # -- enables ingress
   enabled: false
@@ -156,8 +173,13 @@ ingress:
   hosts:
     # -- cms panel host
     cms: "cms.127.0.0.1.nip.io"
-    # -- demo sites hosts
+    # -- demo sites hosts, should correspond with your `nginx.customServerConfigurations` config
     sites: 
+      # @ignored
+      - "kyanite.127.0.0.1.nip.io"
+      # @ignored
+      - "luna-low-code.127.0.0.1.nip.io"
+      # @ignored
       - "luna.127.0.0.1.nip.io"
-      - "bulma-personal-template.127.0.0.1.nip.io"
-      - "no-code.luna.127.0.0.1.nip.io"
+      # @ignored
+      - "luna-no-code.127.0.0.1.nip.io"

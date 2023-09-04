@@ -47,6 +47,9 @@ spec:
             - mountPath: /usr/share/nginx/html
               name: site-repository
               readOnly: true
+            - name: nginx-config
+              mountPath: "/etc/nginx/conf.d"
+              readOnly: true
           {{- if .Values.nginx.livenessProbe.enabled }}
           livenessProbe:
             initialDelaySeconds: {{ .Values.nginx.livenessProbe.initialDelaySeconds }}
@@ -66,6 +69,15 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "websight-cms.fullname" . }}-site-repository
             readOnly: true
+        - name: nginx-config
+          projected:
+            sources:
+              {{- range .Values.nginx.customServerConfigurations }}
+              - configMap:
+                  name: {{ .configMapName }}
+                  items:
+{{ toYaml .configNames | indent 20 }}
+              {{- end }}
       {{- if .Values.nginx.nodeSelector }}
       nodeSelector: {{- .Values.nginx.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
