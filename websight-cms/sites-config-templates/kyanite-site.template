@@ -1,6 +1,6 @@
 server {
     listen       80;
-    server_name  kyanite.127.0.0.1.nip.io;
+    server_name  kyanite.${NGINX_HOST};
     index        Personal.html;
 
     location /libs/kyanite/webroot {

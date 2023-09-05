@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: websight-cms-starter-nginx-example-config-templates
+  name: {{ include "websight-cms.name" . }}-default-configs
   labels:
     app.kubernetes.io/name: {{ include "websight-cms.name" . }}-nginx
     app.kubernetes.io/instance: {{ .Release.Name }}-nginx
@@ -12,5 +12,17 @@ metadata:
     app.kubernetes.io/part-of: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-{{ (.Files.Glob "sites-config-templates/*.template").AsConfig | indent 2 }}
+  healthcheck.conf: |-
+    server {
+        listen       80 default_server;
+        server_name  _;
+  
+        location /health {
+            access_log off;
+            add_header  Content-Type    text/html;
+            return 200;
+        }
+    }
+  10-include-tmp.conf: |-
+    include /tmp/nginx/conf.d/*;
 {{- end }}

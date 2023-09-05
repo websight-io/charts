@@ -72,22 +72,32 @@ nginx:
   replicas: 2
   # -- WebSight Nginx environment variables
   env: []
+  # -- WebSight Nginx host name used for Nginx config, overwrite it to change the nginx configurations `server_name`
+  host: 127.0.0.1.nip.io
   # -- list of Nginx custom configs that will be atached to the container under `/etc/nginx/conf.d/` directory using `configMapRef`
-  customServerConfigurations:
+  customServerConfigurations: []
+      # - configMapName: my-custom-configmap-with-nginx-configs-name
+      # configNames:
+      #   - key: my-page.conf
+      #     path: my-page.conf
+  # -- list of Nginx custom templates that will be atached to the container under `/etc/nginx/templates/` directory using `configMapRef` and processed by `envsubst` command during the entrypoint execution, read more [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration)
+  configurationTemplates:
     # @ignored in generated docs
-    - configMapName: websight-cms-starter-nginx-example-config
+    - configMapName: websight-cms-starter-nginx-example-config-templates
       # @ignored in generated docs
       configNames:
-        - key: healthcheck.conf
-          path: healthcheck.conf
-        - key: kyanite-site.conf
-          path: kyanite-site.conf
-        - key: lowcodeluna-site.conf
-          path: lowcodeluna-site.conf
-        - key: luna-site.conf
-          path: luna-site.conf
-        - key: nocodeluna-site.conf
-          path: nocodeluna-site.conf
+        # @ignored in generated docs
+        - key: kyanite-site.template
+          path: kyanite-site.template
+        # @ignored in generated docs
+        - key: lowcodeluna-site.template
+          path: lowcodeluna-site.template
+        # @ignored in generated docs
+        - key: luna-site.template
+          path: luna-site.template
+        # @ignored in generated docs
+        - key: nocodeluna-site.template
+          path: nocodeluna-site.template
   resources:
     requests:
       # -- WebSight Nginx request memory resources

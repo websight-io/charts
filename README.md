@@ -14,6 +14,10 @@ This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the 
 ## CMS
 
 ### Quick start
+
+> Important!!!
+> Make sure to install [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/) before installing WebSight CMS.
+
 ```bash
 helm upgrade --install my-websight websight-cms \
   --repo https://websight-io.github.io/charts \
@@ -97,9 +101,11 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.resources.requests.cpu | string | `"500m"` | MongoDB request cpu resources |
 | mongo.resources.requests.memory | string | `"1Gi"` | MongoDB request memory resources |
 | mongo.storage.size | string | `"2Gi"` | MongoDB Repository volume size |
+| nginx.configurationTemplates | list | `[]` | list of Nginx custom templates that will be atached to the container under `/etc/nginx/templates/` directory using `configMapRef` and processed by `envsubst` command during the entrypoint execution, read more [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration) |
 | nginx.customServerConfigurations | list | `[]` | list of Nginx custom configs that will be atached to the container under `/etc/nginx/conf.d/` directory using `configMapRef` |
 | nginx.enabled | bool | `true` | enables Web Server |
 | nginx.env | list | `[]` | WebSight Nginx environment variables |
+| nginx.host | string | `"127.0.0.1.nip.io"` | WebSight Nginx host name used for Nginx config, overwrite it to change the nginx configurations `server_name` |
 | nginx.image.pullPolicy | string | `"IfNotPresent"` | Web Server image pull policy |
 | nginx.image.repository | string | `"nginx"` | Web Server image repository |
 | nginx.image.tag | string | `"1.23.3"` | Web Server project image tag |
@@ -119,7 +125,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | siteRepository.rwxStorageClassName | string | `nil` | Configure storageClassName in case you want to use `ReadWriteMany` access mode |
 | siteRepository.storage.size | string | `"2Gi"` | Site Repository volume size |
 
-### Configuring custom admin username and password
+### configuration
+
+#### Custom CMS admin username and password
 
 > Important!!!
 >
@@ -151,6 +159,14 @@ cms:
     - cms-admin                # add all `<Release name>-cms-admin` secrets as env variables (this is how CMS reads custom username)
   customAdminSecret: cms-admin # mount `<Release name>-cms-admin` secret for CMS pod and add value from `WS_ADMIN_PASSWORD` key as a secret file (this is how CMS reads custom password)
 ```
+
+#### Nginx custom configuration
+
+> Out-of-the-box, nginx doesn't support environment variables inside most configuration blocks. But this image has a function, which will extract environment variables before nginx starts.
+
+Read more about the mechanics [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration).
+
+Use `nginx.configurationTemplates` to add custom configuration templates to the nginx via configMapRef and `nginx.env` to pass the environment variables to the nginx.
 
 ## Improvements (help wanted)
 

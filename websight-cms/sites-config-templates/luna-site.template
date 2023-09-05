@@ -1,6 +1,6 @@
 server {
     listen       80;
-    server_name  luna.127.0.0.1.nip.io;
+    server_name  luna.${NGINX_HOST};
     index        Homepage.html;
 
     location /libs/howlite/web_root {
