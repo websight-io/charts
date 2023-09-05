@@ -1,6 +1,6 @@
 server {
     listen       80;
-    server_name  luna-low-code.127.0.0.1.nip.io;
+    server_name  luna-low-code.${NGINX_HOST};
     index        Homepage.html;
 
     location /apps/luna/web_root {

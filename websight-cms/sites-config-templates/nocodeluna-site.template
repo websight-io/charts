@@ -1,6 +1,6 @@
 server {
     listen       80;
-    server_name  luna-no-code.127.0.0.1.nip.io;
+    server_name  luna-no-code.${NGINX_HOST};
     index        Homepage.html;
 
     location /libs/kyanite/webroot {

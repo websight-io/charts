@@ -14,6 +14,10 @@
 ## CMS
 
 ### Quick start
+
+> Important!!!
+> Make sure to install [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/) before installing WebSight CMS.
+
 ```bash
 helm upgrade --install my-websight websight-cms \
   --repo https://websight-io.github.io/charts \
@@ -51,7 +55,9 @@ The command removes all the Kubernetes components associated with the chart and 
 
 {{ template "chart.requirementsSection" . }}
 
-### Configuring custom admin username and password
+### configuration
+
+#### Custom CMS admin username and password
 
 > Important!!!
 >
@@ -84,6 +90,13 @@ cms:
   customAdminSecret: cms-admin # mount `<Release name>-cms-admin` secret for CMS pod and add value from `WS_ADMIN_PASSWORD` key as a secret file (this is how CMS reads custom password)
 ```
 
+#### Nginx custom configuration
+
+> Out-of-the-box, nginx doesn't support environment variables inside most configuration blocks. But this image has a function, which will extract environment variables before nginx starts.
+
+Read more about the mechanics [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration).
+
+Use `nginx.configurationTemplates` to add custom configuration templates to the nginx via configMapRef and `nginx.env` to pass the environment variables to the nginx.
 
 ## Improvements (help wanted)
 
