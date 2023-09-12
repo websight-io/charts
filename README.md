@@ -76,10 +76,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.readinessProbe.successThreshold | int | `1` |  |
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
 | cms.replicas | int | `1` | number of WebSight CMS replicas |
-| cms.resources.limits.cpu | string | `"1000m"` | WebSight CMS limits cpu resources |
-| cms.resources.limits.memory | string | `"4Gi"` | WebSight CMS limits memory resources |
-| cms.resources.requests.cpu | string | `"500m"` | WebSight CMS request cpu resources |
-| cms.resources.requests.memory | string | `"1Gi"` | WebSight CMS request memory resources |
+| cms.resources | object | `{}` | WebSight CMS container's resources settings |
 | ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
 | ingress.enabled | bool | `false` | enables ingress |
 | ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms panel host |
@@ -96,10 +93,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | mongo.livenessProbe.timeoutSeconds | int | `5` |  |
 | mongo.nodeSelector | object | `nil` | MongoDB node selector |
 | mongo.replicas | int | `1` | number of MongoDB replicas - valid values are `0` or `1`, do not set above `1` |
-| mongo.resources.limits.cpu | string | `"1000m"` | MongoDB limits cpu resources |
-| mongo.resources.limits.memory | string | `"4Gi"` | MongoDB limits memory resources |
-| mongo.resources.requests.cpu | string | `"500m"` | MongoDB request cpu resources |
-| mongo.resources.requests.memory | string | `"1Gi"` | MongoDB request memory resources |
+| mongo.resources | object | `{}` | MongoDB resources settings |
 | mongo.storage.size | string | `"2Gi"` | MongoDB Repository volume size |
 | nginx.configurationTemplates | list | `[]` | list of Nginx custom templates that will be atached to the container under `/etc/nginx/templates/` directory using `configMapRef` and processed by `envsubst` command during the entrypoint execution, read more [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration) |
 | nginx.customServerConfigurations | list | `[]` | list of Nginx custom configs that will be atached to the container under `/etc/nginx/conf.d/` directory using `configMapRef` |
@@ -117,10 +111,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | nginx.livenessProbe.timeoutSeconds | int | `1` |  |
 | nginx.nodeSelector | object | `nil` | WebSight Nginx node selector |
 | nginx.replicas | int | `2` | number of Web Server replicas |
-| nginx.resources.limits.cpu | string | `"100m"` | WebSight Nginx limits cpu resources |
-| nginx.resources.limits.memory | string | `"100Mi"` | WebSight Nginx limits memory resources |
-| nginx.resources.requests.cpu | string | `"50m"` | WebSight Nginx request cpu resources |
-| nginx.resources.requests.memory | string | `"50Mi"` | WebSight Nginx request memory resources |
+| nginx.resources | object | `{}` | WebSight Nginx resources settings |
 | siteRepository.enabled | bool | `true` | enables Site Repository volume |
 | siteRepository.rwxStorageClassName | string | `nil` | Configure storageClassName in case you want to use `ReadWriteMany` access mode |
 | siteRepository.storage.size | string | `"2Gi"` | Site Repository volume size |

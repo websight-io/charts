@@ -60,13 +60,10 @@ spec:
             - name: debug
               containerPort: 5005
             {{- end }}
+          {{- if .Values.cms.resources }}
           resources:
-            requests:
-              memory: {{ .Values.cms.resources.requests.memory }}
-              cpu: {{ .Values.cms.resources.requests.cpu }}
-            limits:
-              memory: {{ .Values.cms.resources.limits.memory }}
-              cpu: {{ .Values.cms.resources.limits.cpu }}
+{{ toYaml .Values.cms.resources | indent 12 }}
+          {{- end }}
           volumeMounts:
           {{- if .Values.cms.customAdminSecret }}
             - name: admin-password

@@ -27,17 +27,12 @@ cms:
   envsFromConfig: []
   # -- Name of the secret (without release name prefix) where custom admin password is stored under `WS_ADMIN_PASSWORD` key
   customAdminSecret:
+  # -- WebSight CMS container's resources settings
   resources:
+    # @ignored in generated docs
     requests:
-      # -- WebSight CMS request memory resources
-      memory: 1Gi
-      # -- WebSight CMS request cpu resources
       cpu: 500m
-    limits:
-      # -- WebSight CMS limits memory resources
-      memory: 4Gi
-      # -- WebSight CMS limits cpu resources
-      cpu: 1000m
+      memory: 1Gi
   livenessProbe:
     # -- enables WebSight CMS pods liveness probe
     enabled: true
@@ -98,17 +93,12 @@ nginx:
         # @ignored in generated docs
         - key: nocodeluna-site.template
           path: nocodeluna-site.template
+  # -- WebSight Nginx resources settings
   resources:
+    # @ignored in generated docs
     requests:
-      # -- WebSight Nginx request memory resources
-      memory: 50Mi
-      # -- WebSight Nginx request cpu resources
       cpu: 50m
-    limits:
-      # -- WebSight Nginx limits memory resources
-      memory: 100Mi
-      # -- WebSight Nginx limits cpu resources
-      cpu: 100m
+      memory: 50Mi
   livenessProbe:
     # -- enables WebSight Nginx pods liveness probe
     enabled: true
@@ -147,17 +137,12 @@ mongo:
       value: mongoadmin
     - name: MONGO_INITDB_ROOT_USERNAME
       value: mongoadmin
+  # -- MongoDB resources settings
   resources:
+    # @ignored in generated docs
     requests:
-      # -- MongoDB request memory resources
-      memory: 1Gi
-      # -- MongoDB request cpu resources
       cpu: 500m
-    limits:
-      # -- MongoDB limits memory resources
-      memory: 4Gi
-      # -- MongoDB limits cpu resources
-      cpu: 1000m
+      memory: 1Gi
   livenessProbe:
     # -- enables MongoDB pods liveness probe
     enabled: true

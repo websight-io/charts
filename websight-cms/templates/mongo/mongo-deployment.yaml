@@ -35,13 +35,10 @@ spec:
           name: mongo
           ports:
             - containerPort: 27017
+          {{- if .Values.mongo.resources }}
           resources:
-            requests:
-              memory: {{ .Values.mongo.resources.requests.memory }}
-              cpu: {{ .Values.mongo.resources.requests.cpu }}
-            limits:
-              memory: {{ .Values.mongo.resources.limits.memory }}
-              cpu: {{ .Values.mongo.resources.limits.cpu }}
+{{ toYaml .Values.cms.resources | indent 12 }}
+          {{- end }}
           volumeMounts:
             - mountPath: /data/db
               name: mongo-repository
