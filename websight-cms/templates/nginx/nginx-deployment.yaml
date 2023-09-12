@@ -40,13 +40,10 @@ spec:
             {{- end }}
           ports:
             - containerPort: 80
+          {{- if .Values.nginx.resources }}
           resources:
-            requests:
-              memory: {{ .Values.nginx.resources.requests.memory }}
-              cpu: {{ .Values.nginx.resources.requests.cpu }}
-            limits:
-              memory: {{ .Values.nginx.resources.limits.memory }}
-              cpu: {{ .Values.nginx.resources.limits.cpu }}
+{{ toYaml .Values.nginx.resources | indent 12 }}
+          {{- end }}
           volumeMounts:
             - name: tmp-config
               mountPath: /tmp/nginx/conf.d
