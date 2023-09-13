@@ -55,7 +55,7 @@ The command removes all the Kubernetes components associated with the chart and 
 |-----|------|---------|-------------|
 | cms.customAdminSecret | string | `nil` | Name of the secret (without release name prefix) where custom admin password is stored under `WS_ADMIN_PASSWORD` key |
 | cms.debug.enabled | bool | `false` | enables WebSight CMS debug on port 5005 |
-| cms.env | list | `[{"name":"LEASE_CHECK_MODE","value":"LENIENT"}]` | WebSight CMS environment variables |
+| cms.env | list | `[]` | WebSight CMS environment variables |
 | cms.envsFromConfig | list | `[]` | List of WebSight CMS config maps that will work with `configMapRef` |
 | cms.envsFromSecret | list | `[]` | List of WebSight CMS secrets that will work with `secretRef` |
 | cms.image.pullPolicy | string | `"IfNotPresent"` | WebSight CMS project image pull policy |

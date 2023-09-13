@@ -18,9 +18,7 @@ cms:
     # -- enables WebSight CMS debug on port 5005
     enabled: false
   # -- WebSight CMS environment variables
-  env:
-    - name: LEASE_CHECK_MODE
-      value: LENIENT
+  env: []
   # -- List of WebSight CMS secrets that will work with `secretRef`
   envsFromSecret: []
   # -- List of WebSight CMS config maps that will work with `configMapRef`
