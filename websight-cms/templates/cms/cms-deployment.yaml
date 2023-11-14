@@ -67,7 +67,7 @@ spec:
           volumeMounts:
           {{- if .Values.cms.customAdminSecret }}
             - name: admin-password
-              mountPath: /websight/resources/secrets
+              mountPath: /websight/launcher/resources/secrets
               readOnly: true
           {{- end }}
           {{- if .Values.siteRepository.enabled }}
