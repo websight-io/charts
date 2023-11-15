@@ -4,35 +4,36 @@
 # WebSight CMS configuration
 cms:
   image: 
-    # -- WebSight CMS project image repository
-    repository: public.ecr.aws/ds/websight-cms-starter
-    # -- WebSight CMS project image tag, overwrites value from `.Chart.appVersion`
+    # -- project image repository
+    repository: europe-docker.pkg.dev/websight-io/public/websight-cms-starter
+    # -- project image tag, overwrites value from `.Chart.appVersion`
     tag:
-    # -- WebSight CMS project image pull policy
+    # -- project image pull policy
     pullPolicy: IfNotPresent
   # -- cms image pull secrets
   imagePullSecrets: []
-  # -- number of WebSight CMS replicas
-  replicas: 1
-  debug:
-    # -- enables WebSight CMS debug on port 5005
-    enabled: false
-  # -- WebSight CMS environment variables
+  persistence:  
+    mode: tar
+    tar:
+      # -- tar persistance volume size
+      size: 2Gi
+      storageClassName: ""
+  # -- environment variables
   env: []
-  # -- List of WebSight CMS secrets that will work with `secretRef`
+  # -- List of secrets that will work with `secretRef`
   envsFromSecret: []
-  # -- List of WebSight CMS config maps that will work with `configMapRef`
+  # -- List of config maps that will work with `configMapRef`
   envsFromConfig: []
   # -- Name of the secret (without release name prefix) where custom admin password is stored under `WS_ADMIN_PASSWORD` key
   customAdminSecret:
-  # -- WebSight CMS container's resources settings
+  # -- container's resources settings
   resources:
     # @ignored in generated docs
     requests:
       cpu: 500m
       memory: 1Gi
   livenessProbe:
-    # -- enables WebSight CMS pods liveness probe
+    # -- enables pods liveness probe
     enabled: true
     initialDelaySeconds: 30
     periodSeconds: 10
@@ -40,120 +41,18 @@ cms:
     failureThreshold: 3
     successThreshold: 1
   readinessProbe:
-    # -- enables WebSight CMS pods readiness probe
+    # -- enables pods readiness probe
     enabled: true
     initialDelaySeconds: 30
     periodSeconds: 30
     timeoutSeconds: 10
     failureThreshold: 3
     successThreshold: 1
-  # -- (object) CMS node selector
+  # -- (object) node selector
   nodeSelector:
-
-# Web Server (Nginx) configuration
-nginx:
-  # -- enables Web Server
-  enabled: true
-  image: 
-    # -- Web Server image repository
-    repository: nginx
-    # -- Web Server project image tag
-    tag: 1.23.3
-    # -- Web Server image pull policy
-    pullPolicy: IfNotPresent
-  # -- number of Web Server replicas
-  replicas: 2
-  # -- WebSight Nginx environment variables
-  env: []
-  # -- WebSight Nginx host name used for Nginx config, overwrite it to change the nginx configurations `server_name`
-  host: 127.0.0.1.nip.io
-  # -- list of Nginx custom configs that will be atached to the container under `/etc/nginx/conf.d/` directory using `configMapRef`
-  customServerConfigurations: []
-      # - configMapName: my-custom-configmap-with-nginx-configs-name
-      # configNames:
-      #   - key: my-page.conf
-      #     path: my-page.conf
-  # -- list of Nginx custom templates that will be atached to the container under `/etc/nginx/templates/` directory using `configMapRef` and processed by `envsubst` command during the entrypoint execution, read more [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration)
-  configurationTemplates:
-    # @ignored in generated docs
-    - configMapName: websight-cms-starter-nginx-example-config-templates
-      # @ignored in generated docs
-      configNames:
-        # @ignored in generated docs
-        - key: kyanite-site.template
-          path: kyanite-site.template
-        # @ignored in generated docs
-        - key: lowcodeluna-site.template
-          path: lowcodeluna-site.template
-        # @ignored in generated docs
-        - key: luna-site.template
-          path: luna-site.template
-        # @ignored in generated docs
-        - key: nocodeluna-site.template
-          path: nocodeluna-site.template
-  # -- WebSight Nginx resources settings
-  resources:
-    # @ignored in generated docs
-    requests:
-      cpu: 50m
-      memory: 50Mi
-  livenessProbe:
-    # -- enables WebSight Nginx pods liveness probe
-    enabled: true
-    initialDelaySeconds: 5
-    periodSeconds: 5
-    timeoutSeconds: 1
-    failureThreshold: 6
-    successThreshold: 1
-  # -- (object) WebSight Nginx node selector
-  nodeSelector:
-
-# Site Repository volume configuration
-siteRepository:
-  # -- enables Site Repository volume
-  enabled: true
-  storage:
-    # -- Site Repository volume size
-    size: 2Gi
-  # -- (string) Configure storageClassName in case you want to use `ReadWriteMany` access mode
-  rwxStorageClassName:
-
-# MongoDB Content Store configuration
-mongo:
-  image: 
-    # -- MongoDB Content Store image repository
-    repository: mongo
-    # -- MongoDB Content Store image tag
-    tag: 4.4.6
-    # -- MongoDB Content Store image pull policy
-    pullPolicy: IfNotPresent
-  # -- number of MongoDB replicas - valid values are `0` or `1`, do not set above `1`
-  replicas: 1
-  # -- MongoDB Content Store environment variables
-  env:
-    - name: MONGO_INITDB_ROOT_PASSWORD
-      value: mongoadmin
-    - name: MONGO_INITDB_ROOT_USERNAME
-      value: mongoadmin
-  # -- MongoDB resources settings
-  resources:
-    # @ignored in generated docs
-    requests:
-      cpu: 500m
-      memory: 1Gi
-  livenessProbe:
-    # -- enables MongoDB pods liveness probe
-    enabled: true
-    initialDelaySeconds: 15
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 3
-    successThreshold: 1
-  storage:
-    # -- MongoDB Repository volume size
-    size: 2Gi
-  # -- (object) MongoDB node selector
-  nodeSelector:
+  debug:
+    # -- enables debug on port 5005
+    enabled: false
 
 # Ingress configuration for local development
 ingress:
@@ -164,15 +63,5 @@ ingress:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-body-size: 5m
   hosts:
-    # -- cms panel host
+    # -- cms host
     cms: "cms.127.0.0.1.nip.io"
-    # -- demo sites hosts, should correspond with your `nginx.customServerConfigurations` config
-    sites: 
-      # @ignored
-      - "kyanite.127.0.0.1.nip.io"
-      # @ignored
-      - "luna-low-code.127.0.0.1.nip.io"
-      # @ignored
-      - "luna.127.0.0.1.nip.io"
-      # @ignored
-      - "luna-no-code.127.0.0.1.nip.io"

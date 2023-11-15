@@ -1,15 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "websight-cms.fullname" . }}-cms
+  name: {{ include "websight-cms.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
-    app.kubernetes.io/instance: {{ .Release.Name }}-cms
-    app.kubernetes.io/version: {{ .Values.cms.image.tag }}
-    app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/component: cms
-    app.kubernetes.io/part-of: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- include "websight-cms.labels" . | nindent 4 }}
 spec:
   type: ClusterIP
   ports:
@@ -17,5 +11,4 @@ spec:
       port: 8080
       targetPort: 8080
   selector:
-    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
-    app.kubernetes.io/instance: {{ .Release.Name }}-cms
+    {{- include "websight-cms.selectorLabels" . | nindent 4 }}

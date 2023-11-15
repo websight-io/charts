@@ -19,18 +19,16 @@
 > Make sure to install [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/) before installing WebSight CMS.
 
 ```bash
-helm upgrade --install my-websight websight-cms \
+helm upgrade --install websight-cms websight-cms \
   --repo https://websight-io.github.io/charts \
-  --namespace ws --create-namespace --set ingress.enabled=true
+  --namespace cms --create-namespace --set ingress.enabled=true
 ```
+
+helm upgrade --install websight-cms . \
+  --namespace cms --create-namespace --set ingress.enabled=true
 
 > WebSight instance will be available at: 
 > - CMS Panel: http://cms.127.0.0.1.nip.io
-> - Demo sites:
->   - http://kyanite.127.0.0.1.nip.io
->   - http://luna-low-code.127.0.0.1.nip.io
->   - http://luna.127.0.0.1.nip.io
->   - http://luna-no-code.127.0.0.1.nip.io
 
 ### Installing the Chart
 To install the chart with the release name `my-websight` using existing domain that points to your Kubernetes cluster, run: 
@@ -89,15 +87,3 @@ cms:
     - cms-admin                # add all `<Release name>-cms-admin` secrets as env variables (this is how CMS reads custom username)
   customAdminSecret: cms-admin # mount `<Release name>-cms-admin` secret for CMS pod and add value from `WS_ADMIN_PASSWORD` key as a secret file (this is how CMS reads custom password)
 ```
-
-#### Nginx custom configuration
-
-> Out-of-the-box, nginx doesn't support environment variables inside most configuration blocks. But this image has a function, which will extract environment variables before nginx starts.
-
-Read more about the mechanics [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration).
-
-Use `nginx.configurationTemplates` to add custom configuration templates to the nginx via configMapRef and `nginx.env` to pass the environment variables to the nginx.
-
-## Improvements (help wanted)
-
-- `*` use Community MongoDB Operator instead of custom mongo chart
