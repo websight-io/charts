@@ -19,9 +19,9 @@ This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the 
 > Make sure to install [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/) before installing WebSight CMS.
 
 ```bash
-helm upgrade --install my-websight websight-cms \
+helm upgrade --install websight-cms websight-cms \
   --repo https://websight-io.github.io/charts \
-  --namespace ws --create-namespace --set ingress.enabled=true
+  --namespace cms --create-namespace --set ingress.enabled=true
 ```
 
 > WebSight instance will be available at:
@@ -64,9 +64,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.livenessProbe.successThreshold | int | `1` |  |
 | cms.livenessProbe.timeoutSeconds | int | `3` |  |
 | cms.nodeSelector | object | `nil` | node selector |
-| cms.persistence.mode | string | `"tar"` |  |
+| cms.persistence.mode | string | `"tar"` | sets persistence mode, currenly `tar` is the only supported mode |
 | cms.persistence.tar.size | string | `"2Gi"` | tar persistance volume size |
-| cms.persistence.tar.storageClassName | string | `""` |  |
+| cms.persistence.tar.storageClassName | string | `""` | tar persistance volume storage class |
 | cms.readinessProbe.enabled | bool | `true` | enables pods readiness probe |
 | cms.readinessProbe.failureThreshold | int | `3` |  |
 | cms.readinessProbe.initialDelaySeconds | int | `30` |  |

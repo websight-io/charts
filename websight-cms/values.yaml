@@ -13,10 +13,12 @@ cms:
   # -- cms image pull secrets
   imagePullSecrets: []
   persistence:  
+    # -- sets persistence mode, currenly `tar` is the only supported mode
     mode: tar
     tar:
       # -- tar persistance volume size
       size: 2Gi
+      # -- tar persistance volume storage class
       storageClassName: ""
   # -- environment variables
   env: []
