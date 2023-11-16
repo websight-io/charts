@@ -1,0 +1,15 @@
+{{- if eq .Values.cms.persistence.mode "tar" -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "websight-cms.fullname" . }}-tar
+  labels:
+    {{- include "websight-cms.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.cms.persistence.tar.size }}
+#   storageClassName: {{ .Values.cms.persistence.tar.storageClass }}
+{{- end -}}

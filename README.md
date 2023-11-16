@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.0](https://img.shields.io/badge/AppVersion-1.19.0-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.22.1](https://img.shields.io/badge/AppVersion-1.22.1-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -19,18 +19,13 @@ This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the 
 > Make sure to install [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/) before installing WebSight CMS.
 
 ```bash
-helm upgrade --install my-websight websight-cms \
+helm upgrade --install websight-cms websight-cms \
   --repo https://websight-io.github.io/charts \
-  --namespace ws --create-namespace --set ingress.enabled=true
+  --namespace cms --create-namespace --set ingress.enabled=true
 ```
 
 > WebSight instance will be available at:
 > - CMS Panel: http://cms.127.0.0.1.nip.io
-> - Demo sites:
->   - http://kyanite.127.0.0.1.nip.io
->   - http://luna-low-code.127.0.0.1.nip.io
->   - http://luna.127.0.0.1.nip.io
->   - http://luna-no-code.127.0.0.1.nip.io
 
 ### Installing the Chart
 To install the chart with the release name `my-websight` using existing domain that points to your Kubernetes cluster, run:
@@ -54,67 +49,34 @@ The command removes all the Kubernetes components associated with the chart and 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | cms.customAdminSecret | string | `nil` | Name of the secret (without release name prefix) where custom admin password is stored under `WS_ADMIN_PASSWORD` key |
-| cms.debug.enabled | bool | `false` | enables WebSight CMS debug on port 5005 |
-| cms.env | list | `[]` | WebSight CMS environment variables |
-| cms.envsFromConfig | list | `[]` | List of WebSight CMS config maps that will work with `configMapRef` |
-| cms.envsFromSecret | list | `[]` | List of WebSight CMS secrets that will work with `secretRef` |
-| cms.image.pullPolicy | string | `"IfNotPresent"` | WebSight CMS project image pull policy |
-| cms.image.repository | string | `"public.ecr.aws/ds/websight-cms-starter"` | WebSight CMS project image repository |
-| cms.image.tag | string | `nil` | WebSight CMS project image tag, overwrites value from `.Chart.appVersion` |
+| cms.debug.enabled | bool | `false` | enables debug on port 5005 |
+| cms.env | list | `[]` | environment variables |
+| cms.envsFromConfig | list | `[]` | List of config maps that will work with `configMapRef` |
+| cms.envsFromSecret | list | `[]` | List of secrets that will work with `secretRef` |
+| cms.image.pullPolicy | string | `"IfNotPresent"` | project image pull policy |
+| cms.image.repository | string | `"europe-docker.pkg.dev/websight-io/public/websight-cms-starter"` | project image repository |
+| cms.image.tag | string | `nil` | project image tag, overwrites value from `.Chart.appVersion` |
 | cms.imagePullSecrets | list | `[]` | cms image pull secrets |
-| cms.livenessProbe.enabled | bool | `true` | enables WebSight CMS pods liveness probe |
+| cms.livenessProbe.enabled | bool | `true` | enables pods liveness probe |
 | cms.livenessProbe.failureThreshold | int | `3` |  |
 | cms.livenessProbe.initialDelaySeconds | int | `30` |  |
 | cms.livenessProbe.periodSeconds | int | `10` |  |
 | cms.livenessProbe.successThreshold | int | `1` |  |
 | cms.livenessProbe.timeoutSeconds | int | `3` |  |
-| cms.nodeSelector | object | `nil` | CMS node selector |
-| cms.readinessProbe.enabled | bool | `true` | enables WebSight CMS pods readiness probe |
+| cms.nodeSelector | object | `nil` | node selector |
+| cms.persistence.mode | string | `"tar"` | sets persistence mode, currenly `tar` is the only supported mode |
+| cms.persistence.tar.size | string | `"2Gi"` | tar persistance volume size |
+| cms.persistence.tar.storageClassName | string | `""` | tar persistance volume storage class |
+| cms.readinessProbe.enabled | bool | `true` | enables pods readiness probe |
 | cms.readinessProbe.failureThreshold | int | `3` |  |
 | cms.readinessProbe.initialDelaySeconds | int | `30` |  |
 | cms.readinessProbe.periodSeconds | int | `30` |  |
 | cms.readinessProbe.successThreshold | int | `1` |  |
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
-| cms.replicas | int | `1` | number of WebSight CMS replicas |
-| cms.resources | object | `{}` | WebSight CMS container's resources settings |
+| cms.resources | object | `{}` | container's resources settings |
 | ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
 | ingress.enabled | bool | `false` | enables ingress |
-| ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms panel host |
-| ingress.hosts.sites | list | `[]` | demo sites hosts, should correspond with your `nginx.customServerConfigurations` config |
-| mongo.env | list | `[{"name":"MONGO_INITDB_ROOT_PASSWORD","value":"mongoadmin"},{"name":"MONGO_INITDB_ROOT_USERNAME","value":"mongoadmin"}]` | MongoDB Content Store environment variables |
-| mongo.image.pullPolicy | string | `"IfNotPresent"` | MongoDB Content Store image pull policy |
-| mongo.image.repository | string | `"mongo"` | MongoDB Content Store image repository |
-| mongo.image.tag | string | `"4.4.6"` | MongoDB Content Store image tag |
-| mongo.livenessProbe.enabled | bool | `true` | enables MongoDB pods liveness probe |
-| mongo.livenessProbe.failureThreshold | int | `3` |  |
-| mongo.livenessProbe.initialDelaySeconds | int | `15` |  |
-| mongo.livenessProbe.periodSeconds | int | `10` |  |
-| mongo.livenessProbe.successThreshold | int | `1` |  |
-| mongo.livenessProbe.timeoutSeconds | int | `5` |  |
-| mongo.nodeSelector | object | `nil` | MongoDB node selector |
-| mongo.replicas | int | `1` | number of MongoDB replicas - valid values are `0` or `1`, do not set above `1` |
-| mongo.resources | object | `{}` | MongoDB resources settings |
-| mongo.storage.size | string | `"2Gi"` | MongoDB Repository volume size |
-| nginx.configurationTemplates | list | `[]` | list of Nginx custom templates that will be atached to the container under `/etc/nginx/templates/` directory using `configMapRef` and processed by `envsubst` command during the entrypoint execution, read more [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration) |
-| nginx.customServerConfigurations | list | `[]` | list of Nginx custom configs that will be atached to the container under `/etc/nginx/conf.d/` directory using `configMapRef` |
-| nginx.enabled | bool | `true` | enables Web Server |
-| nginx.env | list | `[]` | WebSight Nginx environment variables |
-| nginx.host | string | `"127.0.0.1.nip.io"` | WebSight Nginx host name used for Nginx config, overwrite it to change the nginx configurations `server_name` |
-| nginx.image.pullPolicy | string | `"IfNotPresent"` | Web Server image pull policy |
-| nginx.image.repository | string | `"nginx"` | Web Server image repository |
-| nginx.image.tag | string | `"1.23.3"` | Web Server project image tag |
-| nginx.livenessProbe.enabled | bool | `true` | enables WebSight Nginx pods liveness probe |
-| nginx.livenessProbe.failureThreshold | int | `6` |  |
-| nginx.livenessProbe.initialDelaySeconds | int | `5` |  |
-| nginx.livenessProbe.periodSeconds | int | `5` |  |
-| nginx.livenessProbe.successThreshold | int | `1` |  |
-| nginx.livenessProbe.timeoutSeconds | int | `1` |  |
-| nginx.nodeSelector | object | `nil` | WebSight Nginx node selector |
-| nginx.replicas | int | `2` | number of Web Server replicas |
-| nginx.resources | object | `{}` | WebSight Nginx resources settings |
-| siteRepository.enabled | bool | `true` | enables Site Repository volume |
-| siteRepository.rwxStorageClassName | string | `nil` | Configure storageClassName in case you want to use `ReadWriteMany` access mode |
-| siteRepository.storage.size | string | `"2Gi"` | Site Repository volume size |
+| ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms host |
 
 ### configuration
 
@@ -150,15 +112,3 @@ cms:
     - cms-admin                # add all `<Release name>-cms-admin` secrets as env variables (this is how CMS reads custom username)
   customAdminSecret: cms-admin # mount `<Release name>-cms-admin` secret for CMS pod and add value from `WS_ADMIN_PASSWORD` key as a secret file (this is how CMS reads custom password)
 ```
-
-#### Nginx custom configuration
-
-> Out-of-the-box, nginx doesn't support environment variables inside most configuration blocks. But this image has a function, which will extract environment variables before nginx starts.
-
-Read more about the mechanics [here](https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration).
-
-Use `nginx.configurationTemplates` to add custom configuration templates to the nginx via configMapRef and `nginx.env` to pass the environment variables to the nginx.
-
-## Improvements (help wanted)
-
-- `*` use Community MongoDB Operator instead of custom mongo chart

@@ -1,28 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "websight-cms.fullname" . }}-cms
+  name: {{ include "websight-cms.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
-    app.kubernetes.io/instance: {{ .Release.Name }}-cms
-    app.kubernetes.io/version: {{ .Values.cms.image.tag }}
-    app.kubernetes.io/websight-version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/component: cms
-    app.kubernetes.io/part-of: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- include "websight-cms.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.cms.replicas }}
+  replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
-      app.kubernetes.io/instance: {{ .Release.Name }}-cms
+      {{- include "websight-cms.selectorLabels" . | nindent 6 }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "websight-cms.name" . }}-cms
-        app.kubernetes.io/instance: {{ .Release.Name }}-cms
+        {{- include "websight-cms.selectorLabels" . | nindent 8 }}
     spec:
       {{- if .Values.cms.imagePullSecrets }}
       imagePullSecrets: {{- .Values.cms.imagePullSecrets | toYaml | nindent 8 }}
@@ -32,10 +24,6 @@ spec:
           image: "{{ .Values.cms.image.repository }}:{{ default .Chart.AppVersion .Values.cms.image.tag }}"
           imagePullPolicy: {{ .Values.cms.image.pullPolicy }}
           env:
-            - name: MONGODB_HOST
-              value: {{ include "websight-cms.fullname" . }}-mongo
-            - name: MONGODB_PORT
-              value: "27017"
             {{- range $k, $v := .Values.cms.env }}
             - name: {{ $v.name }}
               value: {{ $v.value | quote }}
@@ -65,14 +53,14 @@ spec:
 {{ toYaml .Values.cms.resources | indent 12 }}
           {{- end }}
           volumeMounts:
+          {{- if eq .Values.cms.persistence.mode "tar" }}
+            - name: segment-store-repository
+              mountPath: /websight/launcher/repository
+          {{- end }}
           {{- if .Values.cms.customAdminSecret }}
             - name: admin-password
               mountPath: /websight/launcher/resources/secrets
               readOnly: true
-          {{- end }}
-          {{- if .Values.siteRepository.enabled }}
-            - mountPath: /websight/docroot
-              name: site-repository
           {{- end }}
           {{- if .Values.cms.livenessProbe.enabled }}
           livenessProbe:
@@ -100,10 +88,10 @@ spec:
           {{- end }}
       restartPolicy: Always
       volumes:
-      {{- if .Values.siteRepository.enabled }}
-        - name: site-repository
+      {{- if eq .Values.cms.persistence.mode "tar" }}
+        - name: segment-store-repository
           persistentVolumeClaim:
-            claimName: {{ include "websight-cms.fullname" . }}-site-repository
+            claimName: {{ include "websight-cms.fullname" . }}-tar
       {{- end }}
       {{- if .Values.cms.customAdminSecret }}
         - name: admin-password
@@ -116,4 +104,5 @@ spec:
       {{- if .Values.cms.nodeSelector }}
       nodeSelector: {{- .Values.cms.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
+
 status: {}
