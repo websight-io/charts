@@ -7,9 +7,9 @@ This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the 
 
 ## Prerequisites
 
-- Kubernetes cluster with at least 2 GB ram and 1 CPU
+- Kubernetes cluster with at least 8 GB ram and 2 CPU
 - Ingress installed on k8s cluster (you may use e.g. [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/)).
-- Helm 3.6+
+- Helm 3.8+
 
 ## CMS
 
@@ -28,19 +28,19 @@ helm upgrade --install websight-cms websight-cms \
 > - CMS Panel: http://cms.127.0.0.1.nip.io
 
 ### Installing the Chart
-To install the chart with the release name `my-websight` using existing domain that points to your Kubernetes cluster, run:
+To install the chart with the release name `websight-cms` using the existing domain that points to your Kubernetes cluster, run:
 ```bash
 helm repo add websight https://websight-io.github.io/charts
-helm install --set ingress.enabled=true --set ingress.hosts.cms=cms.my-page.domain --set ingress.hosts.sites={'my-page.domain'} my-websight websight/websight-cms -n ws --create-namespace
+helm install --set ingress.enabled=true --set ingress.hosts.cms=cms.my-page.domain websight-cms websight/websight-cms -n cms --create-namespace
 ```
 
-This command deploys WebSight CE on Kubernetes cluster with the default configuration using `ws` namespace.
+This command deploys WebSight CMS on Kubernetes cluster with the default configuration in the `cms` namespace.
 The [Parameters](#parameters) section lists the parameters that can be configured.
 
 ### Uninstalling the Chart
 To uninstall/delete the deployment run:
 ```bash
-helm uninstall my-websight -n ws
+helm uninstall websight-cms -n cms
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
