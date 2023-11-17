@@ -11,5 +11,5 @@ spec:
   resources:
     requests:
       storage: {{ .Values.cms.persistence.tar.size }}
-#   storageClassName: {{ .Values.cms.persistence.tar.storageClass }}
+  storageClassName: {{ .Values.cms.persistence.tar.storageClass }}
 {{- end -}}

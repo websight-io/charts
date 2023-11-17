@@ -7,7 +7,7 @@ This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the 
 
 ## Prerequisites
 
-- Kubernetes cluster with at least 8 GB ram and 2 CPU
+- Kubernetes cluster with at least 2 GB ram and 1 CPU
 - Ingress installed on k8s cluster (you may use e.g. [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/)).
 - Helm 3.6+
 
