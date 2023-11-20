@@ -22,7 +22,23 @@ spec:
         - name: cms
           image: "{{ .Values.cms.image.repository }}:{{ default .Chart.AppVersion .Values.cms.image.tag }}"
           imagePullPolicy: {{ .Values.cms.image.pullPolicy }}
+          {{- if eq .Values.cms.persistence.mode "mongo" }}
+          args: ["mongo"]
+          {{- end}}
           env:
+            {{- if .Values.mongodb.enabled }}
+            - name: MONGODB_HOST
+              value: {{ $.Release.Name }}-mongodb
+            {{- if .Values.mongodb.auth.enabled }}
+            - name: MONGODB_USERNAME
+              value: mongoadmin
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Release.Name }}-mongodb
+                  key: mongodb-root-password
+            {{- end }}
+            {{- end}}
             {{- range $k, $v := .Values.cms.env }}
             - name: {{ $v.name }}
               value: {{ $v.value | quote }}

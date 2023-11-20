@@ -1,0 +1,21 @@
+cms:
+  persistence:  
+    # -- sets persistence mode, currenly `tar` is the only supported mode
+    mode: mongo
+    mongo:
+      host: mongodb
+      port: 27017
+      username: mongodb
+      password: mongodb
+
+mongodb:
+  enabled: true
+  auth:
+    enabled: true
+    rootUser: mongoadmin
+    rootPassword: mongoadmin
+    # usernames: [ "mongoadmin" ]
+    # passwords: [ "mongoadmin" ]
+    # databases: [ "sling" ]
+  containerPorts:
+    mongodb: 27017
