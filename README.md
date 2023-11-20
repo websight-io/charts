@@ -64,7 +64,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.livenessProbe.successThreshold | int | `1` |  |
 | cms.livenessProbe.timeoutSeconds | int | `3` |  |
 | cms.nodeSelector | object | `nil` | node selector |
-| cms.persistence.mode | string | `"tar"` | sets persistence mode, currenly `tar` is the only supported mode |
+| cms.persistence.mode | string | `"tar"` | sets persistence mode, currenly `tar` is the only supported mode and it will create a StatefulSet |
 | cms.persistence.tar.size | string | `"2Gi"` | tar persistance volume size |
 | cms.persistence.tar.storageClassName | string | `""` | tar persistance volume storage class |
 | cms.readinessProbe.enabled | bool | `true` | enables pods readiness probe |
@@ -73,12 +73,13 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.readinessProbe.periodSeconds | int | `30` |  |
 | cms.readinessProbe.successThreshold | int | `1` |  |
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
+| cms.replicas | int | `1` | number of replicas, mind that `tar` persistence mode will create a StatefulSet |
 | cms.resources | object | `{}` | container's resources settings |
 | ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
 | ingress.enabled | bool | `false` | enables ingress |
 | ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms host |
 
-### configuration
+### Configuration
 
 #### Custom CMS admin username and password
 

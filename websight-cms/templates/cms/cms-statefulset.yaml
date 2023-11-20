@@ -1,16 +1,15 @@
+{{- if eq .Values.cms.persistence.mode "tar" }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "websight-cms.fullname" . }}
   labels:
     {{- include "websight-cms.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.cms.replicas }}
   selector:
     matchLabels:
       {{- include "websight-cms.selectorLabels" . | nindent 6 }}
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -53,10 +52,8 @@ spec:
 {{ toYaml .Values.cms.resources | indent 12 }}
           {{- end }}
           volumeMounts:
-          {{- if eq .Values.cms.persistence.mode "tar" }}
             - name: segment-store-repository
               mountPath: /websight/launcher/repository
-          {{- end }}
           {{- if .Values.cms.customAdminSecret }}
             - name: admin-password
               mountPath: /websight/launcher/resources/secrets
@@ -86,13 +83,7 @@ spec:
               port: 8080
               scheme: HTTP
           {{- end }}
-      restartPolicy: Always
       volumes:
-      {{- if eq .Values.cms.persistence.mode "tar" }}
-        - name: segment-store-repository
-          persistentVolumeClaim:
-            claimName: {{ include "websight-cms.fullname" . }}-tar
-      {{- end }}
       {{- if .Values.cms.customAdminSecret }}
         - name: admin-password
           secret:
@@ -104,5 +95,15 @@ spec:
       {{- if .Values.cms.nodeSelector }}
       nodeSelector: {{- .Values.cms.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
-
-status: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: segment-store-repository
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.cms.persistence.tar.size }}
+        {{- if .Values.cms.persistence.tar.storageClassName }}
+        storageClassName: {{ .Values.cms.persistence.tar.storageClassName }}
+        {{- end }}
+{{- end }}
