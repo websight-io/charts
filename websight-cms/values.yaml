@@ -12,8 +12,10 @@ cms:
     pullPolicy: IfNotPresent
   # -- cms image pull secrets
   imagePullSecrets: []
+  # -- number of replicas, mind that `tar` persistence mode will create a StatefulSet
+  replicas: 1
   persistence:  
-    # -- sets persistence mode, currenly `tar` is the only supported mode
+    # -- sets persistence mode, currenly `tar` is the only supported mode and it will create a StatefulSet
     mode: tar
     tar:
       # -- tar persistance volume size
