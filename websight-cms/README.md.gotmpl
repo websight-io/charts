@@ -52,6 +52,48 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ### Configuration
 
+#### Running CMS with MongoDB as NodeStore
+
+1. Install MongoDB, e.g. with one of the following options:
+  - Bitnami Helm Chart
+    <details><summary>show commands</summary>
+    <p>
+
+    ```bash
+    helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb --version 14.3.0 \
+      --set auth.enabled=true \
+      --set auth.rootUser="mongoadmin" \
+      --set auth.rootPassword="mongoadmin" \
+      -n cms --create-namespace
+    ```
+
+    </p>
+    </details>
+
+  - `kubectl` and [MongoDB docker image](https://hub.docker.com/_/mongo)
+    <details><summary>show commands</summary>
+    <p>
+
+    ```bash
+    kubectl create namespace cms
+    kubectl run mongodb --image=mongo:7 -n cms \
+      --env MONGO_INITDB_ROOT_USERNAME=mongoadmin \
+      --env MONGO_INITDB_ROOT_PASSWORD=mongoadmin
+    kubectl expose pod mongodb --port=27017 --name=mongodb -n cms
+    ```
+
+    </p>
+    </details>
+
+2. Install CMS with mode `mongo` from `websight-cms` directory:
+   ```bash
+   helm upgrade --install websight-cms . \
+     --set cms.persistence.mode=mongo \
+     --set cms.persistence.mongo.hosts='mongodb:27017' \
+     --set cms.livenessProbe.initialDelaySeconds=60 \
+     -n cms --create-namespace
+   ```
+
 #### Custom CMS admin username and password
 
 > Important!!!
