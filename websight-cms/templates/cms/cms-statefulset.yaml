@@ -38,9 +38,9 @@ spec:
                   key: mongodb-root-password
             {{- end }}
             {{- end}}
-            {{- range $k, $v := .Values.cms.env }}
-            - name: {{ $v.name }}
-              value: {{ $v.value | quote }}
+            {{- range $name, $value := .Values.cms.env }}
+            - name: {{ $name }}
+              value: {{ $value }}
             {{- end }}
             {{- if .Values.cms.debug.enabled }}
             - name: WS_DEBUG

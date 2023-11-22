@@ -28,6 +28,9 @@ helm upgrade --install websight-cms websight-cms \
 > - CMS Panel: http://cms.127.0.0.1.nip.io
 
 ### Installing the Chart
+
+#### TAR persistence mode
+
 To install the chart with the release name `websight-cms` using the existing domain that points to your Kubernetes cluster, run:
 ```bash
 helm repo add websight https://websight-io.github.io/charts
@@ -36,6 +39,21 @@ helm install --set ingress.enabled=true --set ingress.hosts.cms=cms.my-page.doma
 
 This command deploys WebSight CMS on Kubernetes cluster with the default configuration in the `cms` namespace.
 The [Parameters](#parameters) section lists the parameters that can be configured.
+
+#### MongoDB persistence mode
+
+```bash
+helm install websight-cms . -n cms --create-namespace -f values.yaml -f values-mongo.yaml
+```
+
+#### MongoDB persistence mode with external MongoDB
+
+```bash
+helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb -n cms --create-namespace
+export MONGODB_ROOT_PASSWORD=$(kubectl get secret --namespace cms mongodb -o jsonpath="{.data.mongodb-root-password}" | base64 -d)
+
+helm install websight-cms . -n cms --create-namespace --set cms.persistence.mode=mongo --set cms.env.MONGODB_HOST="mongodb" --set cms.env.MONGODB_USERNAME="root" --set cms.env.MONGODB_ROOT_PASSWORD="$MONGODB_ROOT_PASSWORD"
+```
 
 ### Uninstalling the Chart
 To uninstall/delete the deployment run:
