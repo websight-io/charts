@@ -69,3 +69,6 @@ ingress:
   hosts:
     # -- cms host
     cms: "cms.127.0.0.1.nip.io"
+
+mongodb:
+  enabled: false
