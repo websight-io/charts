@@ -1,4 +1,3 @@
-{{- if eq .Values.cms.persistence.mode "tar" }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -122,4 +121,3 @@ spec:
         {{- if .Values.cms.persistence.tar.storageClassName }}
         storageClassName: {{ .Values.cms.persistence.tar.storageClassName }}
         {{- end }}
-{{- end }}
