@@ -1,0 +1,106 @@
+{{- if eq .Values.cms.persistence.mode "mongo" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "websight-cms.fullname" . }}
+  labels:
+    {{- include "websight-cms.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.cms.replicas }}
+  selector:
+    matchLabels:
+      {{- include "websight-cms.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "websight-cms.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.cms.imagePullSecrets }}
+      imagePullSecrets: {{- .Values.cms.imagePullSecrets | toYaml | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: cms
+          image: "{{ .Values.cms.image.repository }}:{{ default .Chart.AppVersion .Values.cms.image.tag }}"
+          imagePullPolicy: {{ .Values.cms.image.pullPolicy }}
+          args: ["mongo"]
+          env:
+            - name: OAK_DOC_NS_MONGOURI_HOSTS
+              value: {{ .Values.cms.persistence.mongo.hosts }}
+            - name: OAK_DOC_NS_MONGOURI_OPTIONS
+              value: {{ .Values.cms.persistence.mongo.connectionOptions | quote }}
+            {{- range $k, $v := .Values.cms.env }}
+            - name: {{ $v.name }}
+              value: {{ $v.value | quote }}
+            {{- end }}
+            {{- if .Values.cms.debug.enabled }}
+            - name: WS_DEBUG
+              value: "true"
+            {{- end }}
+          envFrom:
+          {{- range .Values.cms.envsFromSecret }}
+          - secretRef:
+              name: {{ $.Release.Name }}-{{ . }}
+          {{- end }}
+          {{- range .Values.cms.envsFromConfig }}
+          - configMapRef:
+              name: {{ $.Release.Name }}-{{ . }}
+          {{- end }}
+          ports:
+            - name: panel
+              containerPort: 8080
+            {{- if .Values.cms.debug.enabled }}
+            - name: debug
+              containerPort: 5005
+            {{- end }}
+          {{- if .Values.cms.resources }}
+          resources:
+{{ toYaml .Values.cms.resources | indent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: launcher-repository
+              mountPath: /websight/launcher/repository
+          {{- if .Values.cms.customAdminSecret }}
+            - name: admin-password
+              mountPath: /websight/launcher/resources/secrets
+              readOnly: true
+          {{- end }}
+          {{- if .Values.cms.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.cms.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.cms.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.cms.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.cms.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.cms.livenessProbe.successThreshold }}
+            httpGet:
+              path: /system/health
+              port: 8080
+              scheme: HTTP
+          {{- end }}
+          {{- if .Values.cms.readinessProbe.enabled }}
+          readinessProbe:
+            initialDelaySeconds: {{ .Values.cms.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.cms.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.cms.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.cms.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.cms.readinessProbe.successThreshold }}
+            httpGet:
+              path: /apps/websight-authentication/login.html
+              port: 8080
+              scheme: HTTP
+          {{- end }}
+      restartPolicy: Always
+      volumes:
+        - name: launcher-repository
+          emptyDir: {}
+      {{- if .Values.cms.customAdminSecret }}
+        - name: admin-password
+          secret:
+            secretName: {{ $.Release.Name }}-{{ .Values.cms.customAdminSecret }}
+            items:
+              - key: WS_ADMIN_PASSWORD
+                path: admin.password
+      {{- end }}
+      {{- if .Values.cms.nodeSelector }}
+      nodeSelector: {{- .Values.cms.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
+{{- end }}

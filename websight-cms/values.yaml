@@ -12,16 +12,23 @@ cms:
     pullPolicy: IfNotPresent
   # -- cms image pull secrets
   imagePullSecrets: []
-  # -- number of replicas, mind that `tar` persistence mode will create a StatefulSet
+  # -- number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment
   replicas: 1
   persistence:  
-    # -- sets persistence mode, currenly `tar` is the only supported mode and it will create a StatefulSet
+    # -- sets persistence mode, possible options are `tar` or `mongo`
     mode: tar
+    # tar persistance settings, applied only when persistance is set to `tar`
     tar:
       # -- tar persistance volume size
       size: 2Gi
       # -- tar persistance volume storage class
       storageClassName: ""
+    # mongo persistance settings, applied only when persistance is set to `mongo`
+    mongo:
+      # -- comma separated list of [mongo hosts](https://www.mongodb.com/docs/manual/reference/connection-string/#standard-connection-string-format)
+      hosts: mongodb:27017
+      # -- mongo connection options
+      connectionOptions: ""
   # -- environment variables
   env: []
   # -- List of secrets that will work with `secretRef`

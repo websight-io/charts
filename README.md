@@ -64,7 +64,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.livenessProbe.successThreshold | int | `1` |  |
 | cms.livenessProbe.timeoutSeconds | int | `3` |  |
 | cms.nodeSelector | object | `nil` | node selector |
-| cms.persistence.mode | string | `"tar"` | sets persistence mode, currenly `tar` is the only supported mode and it will create a StatefulSet |
+| cms.persistence.mode | string | `"tar"` | sets persistence mode, possible options are `tar` or `mongo` |
+| cms.persistence.mongo.connectionOptions | string | `""` | mongo connection options |
+| cms.persistence.mongo.hosts | string | `"mongodb:27017"` | comma separated list of [mongo hosts](https://www.mongodb.com/docs/manual/reference/connection-string/#standard-connection-string-format) |
 | cms.persistence.tar.size | string | `"2Gi"` | tar persistance volume size |
 | cms.persistence.tar.storageClassName | string | `""` | tar persistance volume storage class |
 | cms.readinessProbe.enabled | bool | `true` | enables pods readiness probe |
@@ -73,13 +75,55 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.readinessProbe.periodSeconds | int | `30` |  |
 | cms.readinessProbe.successThreshold | int | `1` |  |
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
-| cms.replicas | int | `1` | number of replicas, mind that `tar` persistence mode will create a StatefulSet |
+| cms.replicas | int | `1` | number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment |
 | cms.resources | object | `{}` | container's resources settings |
 | ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
 | ingress.enabled | bool | `false` | enables ingress |
 | ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms host |
 
 ### Configuration
+
+#### Running CMS with MongoDB as NodeStore
+
+1. Install MongoDB, e.g. with one of the following options:
+  - Bitnami Helm Chart
+    <details><summary>show commands</summary>
+    <p>
+
+    ```bash
+    helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb --version 14.3.0 \
+      --set auth.enabled=true \
+      --set auth.rootUser="mongoadmin" \
+      --set auth.rootPassword="mongoadmin" \
+      -n cms --create-namespace
+    ```
+
+    </p>
+    </details>
+
+  - `kubectl` and [MongoDB docker image](https://hub.docker.com/_/mongo)
+    <details><summary>show commands</summary>
+    <p>
+
+    ```bash
+    kubectl create namespace cms
+    kubectl run mongodb --image=mongo:7 -n cms \
+      --env MONGO_INITDB_ROOT_USERNAME=mongoadmin \
+      --env MONGO_INITDB_ROOT_PASSWORD=mongoadmin
+    kubectl expose pod mongodb --port=27017 --name=mongodb -n cms
+    ```
+
+    </p>
+    </details>
+
+2. Install CMS with mode `mongo` from `websight-cms` directory:
+   ```bash
+   helm upgrade --install websight-cms . \
+     --set cms.persistence.mode=mongo \
+     --set cms.persistence.mongo.hosts='mongodb:27017' \
+     --set cms.livenessProbe.initialDelaySeconds=60 \
+     -n cms --create-namespace
+   ```
 
 #### Custom CMS admin username and password
 
