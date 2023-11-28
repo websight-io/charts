@@ -67,6 +67,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.persistence.mode | string | `"tar"` | sets persistence mode, possible options are `tar` or `mongo` |
 | cms.persistence.mongo.connectionOptions | string | `""` | mongo connection options |
 | cms.persistence.mongo.hosts | string | `"mongodb:27017"` | comma separated list of [mongo hosts](https://www.mongodb.com/docs/manual/reference/connection-string/#standard-connection-string-format) |
+| cms.persistence.mongo.passwordSecret | string | `nil` | secret name where mongo admin password is stored under `oak.doc.ns.mongouri.password` key, if not set, default "mongoadmin" password will be used |
+| cms.persistence.mongo.username | string | `"mongoadmin"` | mongo admin username |
 | cms.persistence.tar.size | string | `"2Gi"` | tar persistance volume size |
 | cms.persistence.tar.storageClassName | string | `""` | tar persistance volume storage class |
 | cms.readinessProbe.enabled | bool | `true` | enables pods readiness probe |
@@ -136,18 +138,8 @@ with `WS_ADMIN_USERNAME` and `WS_ADMIN_PASSWORD` values configured and configure
 
 Example:
 
-> cms-secret.yaml
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ $.Release.Name }}-cms-admin
-type: Opaque
-stringData:
-  WS_ADMIN_USERNAME: myadmin # WebSight CMS reads this env to set up the admin username during the first launch
-data:
-  WS_ADMIN_PASSWORD: c2VjcmV0UGFzcw== #base64 encoded
-immutable: true
+```bash
+kubectl create secret generic <Release name>-cms-admin -n cms --from-literal WS_ADMIN_USERNAME=myadmin --from-literal WS_ADMIN_PASSWORD=mys3cretPassw0rd
 ```
 
 > values.yaml
