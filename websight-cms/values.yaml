@@ -29,6 +29,10 @@ cms:
       hosts: mongodb:27017
       # -- mongo connection options
       connectionOptions: ""
+      # -- mongo admin username
+      username: "mongoadmin"
+      # -- secret name where mongo admin password is stored under `oak.doc.ns.mongouri.password` key, if not set, default "mongoadmin" password will be used
+      passwordSecret:
   # -- environment variables
   env: []
   # -- List of secrets that will work with `secretRef`

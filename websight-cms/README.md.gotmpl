@@ -105,18 +105,8 @@ with `WS_ADMIN_USERNAME` and `WS_ADMIN_PASSWORD` values configured and configure
 
 Example:
 
-> cms-secret.yaml
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ "{{ $.Release.Name }}" }}-cms-admin
-type: Opaque
-stringData:
-  WS_ADMIN_USERNAME: myadmin # WebSight CMS reads this env to set up the admin username during the first launch
-data:
-  WS_ADMIN_PASSWORD: c2VjcmV0UGFzcw== #base64 encoded
-immutable: true
+```bash
+kubectl create secret generic <Release name>-cms-admin -n cms --from-literal WS_ADMIN_USERNAME=myadmin --from-literal WS_ADMIN_PASSWORD=mys3cretPassw0rd
 ```
 
 > values.yaml
