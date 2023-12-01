@@ -23,7 +23,7 @@ cms:
       size: 2Gi
       # -- tar persistance volume storage class
       storageClassName: ""
-    # mongo persistance settings, applied only when persistance is set to `mongo`
+    # mongo persistance settings, applied only when persistance is set to `mongo`, available since CMS version 1.23.0+
     mongo:
       # -- comma separated list of [mongo hosts](https://www.mongodb.com/docs/manual/reference/connection-string/#standard-connection-string-format)
       hosts: mongodb:27017
