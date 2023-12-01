@@ -3,4 +3,4 @@ name: websight-cms
 description: This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 type: application
 version: 2.0.0
-appVersion: "1.23.0"
+appVersion: "1.22.1"
