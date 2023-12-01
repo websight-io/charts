@@ -3,9 +3,9 @@ Your release is named {{ .Release.Name }}.
 
 Your WebSight CE instance is starting...
 
-{{- if .Values.ingress.enabled }}
+{{- if .Values.cms.ingress.enabled }}
 WebSight instance will be available at:{{ ` ` }}
- - CMS Panel: http://{{ .Values.ingress.hosts.cms }}
+ - CMS Panel: http://{{ .Values.cms.ingress.host }}
 {{- end }}
 
 {{- if .Values.cms.customAdminSecret }}

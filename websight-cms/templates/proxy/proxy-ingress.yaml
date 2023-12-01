@@ -1,0 +1,25 @@
+{{- if and (.Values.proxy.enabled) (not (empty .Values.proxy.ingress.sites))  -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "websight-cms.component.fullname" (dict "componentName" "proxy" "context" $) }}
+  {{- if .Values.proxy.ingress.annotations }}
+  annotations: {{- .Values.proxy.ingress.annotations | toYaml | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "websight-cms.component.labels" (dict "componentName" "proxy" "context" $) | nindent 4 }}
+spec:
+  rules:
+  {{- range .Values.proxy.ingress.sites }}
+  - host: {{ tpl . $ }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {{ include "websight-cms.component.fullname" (dict "componentName" "proxy" "context" $) }}
+            port:
+              number: 80
+  {{- end }}
+{{- end }}

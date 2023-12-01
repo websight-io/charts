@@ -73,14 +73,50 @@ cms:
   debug:
     # -- enables debug on port 5005
     enabled: false
-
-# Nginx Ingress configuration
-ingress:
-  # -- enables nginx ingress
-  enabled: false
-  # -- custom ingress annotations
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: 5m
-  hosts:
+  ingress:
+    # -- enables CMS ingress
+    enabled: false
+    # -- custom CMS ingress annotations
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: 5m
     # -- cms host
-    cms: "cms.127.0.0.1.nip.io"
+    host: "cms.127.0.0.1.nip.io"
+
+# WebSight CMS proxy configuration
+proxy:
+  # -- enables proxy
+  enabled: false
+  # -- proxy image repository
+  image:
+    repository: nginx
+    tag: stable-alpine
+  # -- proxy image pull secrets
+  imagePullSecrets: []
+  # -- number of replicas
+  replicas: 1
+  # -- container's resources settings
+  resources:
+    # @ignored in generated docs
+    requests:
+      cpu: 50m
+      memory: 50Mi
+  # -- environment variables
+  env: []
+  # -- Nginx host name used for Nginx config, overwrite it to change the `server_name` in template configurations
+  host: 127.0.0.1.nip.io
+  # -- (object) liveliness probe config
+  livenessProbe:
+    # -- enables pods liveness probe
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
+  # -- (object) node selector
+  nodeSelector:
+  ingress:
+    # -- custom ingress annotations
+    annotations: []
+    # -- sites supported by proxy
+    sites: []

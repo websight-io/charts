@@ -1,0 +1,22 @@
+{{- if and .Values.proxy.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "websight-cms.component.fullname" (dict "componentName" "proxy-default-configs" "context" $) }}
+  labels:
+    {{- include "websight-cms.component.labels" (dict "componentName" "proxy" "context" $) | nindent 4 }}
+data:
+  healthcheck.conf: |-
+    server {
+        listen       80 default_server;
+        server_name  _;
+  
+        location /health {
+            access_log off;
+            add_header  Content-Type    text/html;
+            return 200;
+        }
+    }
+  10-include-tmp.conf: |-
+    include /tmp/proxy/conf.d/*;
+{{- end }}
