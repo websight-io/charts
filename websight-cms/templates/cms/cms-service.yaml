@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "websight-cms.fullname" . }}
+  name: {{ include "websight-cms.component.fullname" (dict "componentName" "cms" "context" $) }}
   labels:
-    {{- include "websight-cms.labels" . | nindent 4 }}
+    {{- include "websight-cms.component.labels" (dict "componentName" "cms" "context" $) | nindent 4 }}
 spec:
   type: ClusterIP
   ports:
@@ -11,4 +11,4 @@ spec:
       port: 8080
       targetPort: 8080
   selector:
-    {{- include "websight-cms.selectorLabels" . | nindent 4 }}
+    {{- include "websight-cms.component.selectorLabels" (dict "componentName" "cms" "context" $) | nindent 4 }}
