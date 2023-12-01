@@ -1,0 +1,95 @@
+{{- if .Values.proxy.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "websight-cms.component.fullname" (dict "componentName" "proxy" "context" $) }}
+  labels:
+    {{- include "websight-cms.component.labels" (dict "componentName" "proxy" "context" $) | nindent 4 }}
+spec:
+  replicas: {{ .Values.proxy.replicas }}
+  selector:
+    matchLabels:
+      {{- include "websight-cms.component.selectorLabels" (dict "componentName" "proxy" "context" $) | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "websight-cms.component.selectorLabels" (dict "componentName" "proxy" "context" $) | nindent 8 }}
+    spec:
+      {{- if .Values.proxy.imagePullSecrets }}
+      imagePullSecrets: {{- .Values.proxy.imagePullSecrets | toYaml | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: nginx
+          image: "{{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag }}"
+          imagePullPolicy: {{ .Values.proxy.image.pullPolicy }}
+          env:
+            - name: NGINX_HOST
+              value: {{ .Values.proxy.host }}
+            - name: NGINX_ENVSUBST_OUTPUT_DIR
+              value: /tmp/nginx/conf.d
+            {{- range $k, $v := .Values.proxy.env }}
+            - name: {{ $v.name }}
+              value: {{ $v.value | quote }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+          {{- if .Values.proxy.resources }}
+          resources:
+{{ toYaml .Values.proxy.resources | indent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: tmp-config
+              mountPath: /tmp/nginx/conf.d
+            - name: nginx-config
+              mountPath: "/etc/nginx/conf.d"
+              readOnly: true
+            - name: nginx-config-templates
+              mountPath: "/etc/nginx/templates"
+              readOnly: true
+          {{- if .Values.proxy.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.proxy.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.proxy.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.proxy.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.proxy.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.proxy.livenessProbe.successThreshold }}
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+          {{- end }}
+      volumes:
+        - name: tmp-config
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Mi
+        - name: nginx-config
+          projected:
+            sources:
+              - configMap:
+                  name: {{ include "websight-cms.component.fullname" (dict "componentName" "proxy-default-configs" "context" $) }}
+                  items:
+                    - key: healthcheck.conf
+                      path: healthcheck.conf
+                    - key: 10-include-tmp.conf
+                      path: 10-include-tmp.conf
+              {{- range .Values.proxy.customServerConfigurations }}
+              - configMap:
+                  name: {{ .configMapName }}
+                  items:
+{{ toYaml .configNames | indent 20 }}
+              {{- end }}
+        - name: nginx-config-templates
+          projected:
+            sources:
+              {{- range .Values.proxy.configurationTemplates }}
+              - configMap:
+                  name: {{ .configMapName }}
+                  items:
+{{ toYaml .configNames | indent 20 }}
+              {{- end }}
+      {{- if .Values.proxy.nodeSelector }}
+      nodeSelector: {{- .Values.proxy.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
+{{- end }}

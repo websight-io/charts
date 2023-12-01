@@ -1,0 +1,16 @@
+{{- if .Values.proxy.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "websight-cms.component.fullname" (dict "componentName" "proxy" "context" $) }}
+  labels:
+    {{- include "websight-cms.component.labels" (dict "componentName" "proxy" "context" $) | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    {{- include "websight-cms.component.selectorLabels" (dict "componentName" "proxy" "context" $) | nindent 4 }}
+{{- end }}
