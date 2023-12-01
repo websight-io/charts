@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "websight-cms.fullname" . }}-ingress
+  name: {{ include "websight-cms.component.fullname" (dict "componentName" "ingress" "context" $) }}
   annotations:
     kubernetes.io/ingress.class: nginx
     {{- if gt .Values.cms.replicas 1 }}
@@ -15,7 +15,7 @@ metadata:
     {{- .Values.ingress.annotations | toYaml | nindent 4 }}
     {{- end }}
   labels:
-    {{- include "websight-cms.labels" . | nindent 4 }}
+    {{- include "websight-cms.component.labels" (dict "componentName" "ingress" "context" $) | nindent 4 }}
 spec:
   rules:
   - host: {{ tpl .Values.ingress.hosts.cms . }}
@@ -25,7 +25,7 @@ spec:
         path: "/"
         backend:
           service:
-            name: {{ include "websight-cms.fullname" . }}
+            name: {{ include "websight-cms.component.fullname" (dict "componentName" "cms" "context" $) }}
             port:
               number: 8080 
 {{- end }}

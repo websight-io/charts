@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "websight-cms.fullname" . }}
+  name: {{ include "websight-cms.component.fullname" (dict "componentName" "cms" "context" $) }}
   labels:
-    {{- include "websight-cms.labels" . | nindent 4 }}
+    {{- include "websight-cms.component.labels" (dict "componentName" "cms" "context" $) | nindent 4 }}
 spec:
   replicas: {{ .Values.cms.replicas }}
   selector:
     matchLabels:
-      {{- include "websight-cms.selectorLabels" . | nindent 6 }}
+      {{- include "websight-cms.component.selectorLabels" (dict "componentName" "cms" "context" $) | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "websight-cms.selectorLabels" . | nindent 8 }}
+        {{- include "websight-cms.component.selectorLabels" (dict "componentName" "cms" "context" $) | nindent 8 }}
     spec:
       {{- if .Values.cms.imagePullSecrets }}
       imagePullSecrets: {{- .Values.cms.imagePullSecrets | toYaml | nindent 8 }}
