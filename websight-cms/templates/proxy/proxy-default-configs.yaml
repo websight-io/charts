@@ -18,5 +18,5 @@ data:
         }
     }
   10-include-tmp.conf: |-
-    include /tmp/proxy/conf.d/*;
+    include /tmp/nginx/conf.d/*;
 {{- end }}

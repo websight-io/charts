@@ -1,0 +1,23 @@
+server {
+    listen       80;
+    server_name  luna.${NGINX_HOST};
+    index        /published/luna/pages/Homepage.html;
+
+    location /published/luna {
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_pass http://websight-cms-cms:8080/published/luna;
+    }
+
+    location /libs {
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_pass http://websight-cms-cms:8080/libs;
+    }
+
+    location /apps {
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_pass http://websight-cms-cms:8080/apps;
+    }
+}

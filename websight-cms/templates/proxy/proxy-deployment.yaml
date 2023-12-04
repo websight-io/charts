@@ -23,8 +23,6 @@ spec:
           image: "{{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag }}"
           imagePullPolicy: {{ .Values.proxy.image.pullPolicy }}
           env:
-            - name: NGINX_HOST
-              value: {{ .Values.proxy.host }}
             - name: NGINX_ENVSUBST_OUTPUT_DIR
               value: /tmp/nginx/conf.d
             {{- range $k, $v := .Values.proxy.env }}
@@ -74,20 +72,15 @@ spec:
                       path: healthcheck.conf
                     - key: 10-include-tmp.conf
                       path: 10-include-tmp.conf
-              {{- range .Values.proxy.customServerConfigurations }}
-              - configMap:
-                  name: {{ .configMapName }}
-                  items:
-{{ toYaml .configNames | indent 20 }}
-              {{- end }}
         - name: nginx-config-templates
           projected:
             sources:
-              {{- range .Values.proxy.configurationTemplates }}
+              {{- range .Values.proxy.sites }}
               - configMap:
-                  name: {{ .configMapName }}
+                  name: {{ .configMapKeyRef.name }}
                   items:
-{{ toYaml .configNames | indent 20 }}
+                    - key: {{ .configMapKeyRef.key }}
+                      path: {{ .configMapKeyRef.key }}
               {{- end }}
       {{- if .Values.proxy.nodeSelector }}
       nodeSelector: {{- .Values.proxy.nodeSelector | toYaml | nindent 8 }}
