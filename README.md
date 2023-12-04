@@ -79,8 +79,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
 | cms.replicas | int | `1` | number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment |
 | cms.resources | object | `{}` | container's resources settings |
-| ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
-| ingress.enabled | bool | `false` | enables ingress |
+| cms.session.cookie | object | `{"expires":172800,"maxAge":172800}` | ingress nginx.ingress.kubernetes.io/affinity settings |
+| ingress.annotations | object | `{"nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
+| ingress.enabled | bool | `false` | enables nginx ingress |
 | ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms host |
 
 ### Configuration
