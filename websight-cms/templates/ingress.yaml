@@ -3,9 +3,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "websight-cms.fullname" . }}-ingress
-  {{- if .Values.ingress.annotations }}
-  annotations: {{- .Values.ingress.annotations | toYaml | nindent 4 }}
-  {{- end }}
+  annotations:
+    {{- if gt .Values.cms.replicas 1 }}
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "websightcms"
+    nginx.ingress.kubernetes.io/session-cookie-expires: {{ .Values.cms.session.cookie.expires | quote }}
+    nginx.ingress.kubernetes.io/session-cookie-max-age: {{ .Values.cms.session.cookie.maxAge | quote }}
+    {{- end }}
+    {{- if .Values.ingress.annotations }}
+    {{- .Values.ingress.annotations | toYaml | nindent 4 }}
+    {{- end }}
   labels:
     {{- include "websight-cms.labels" . | nindent 4 }}
 spec:

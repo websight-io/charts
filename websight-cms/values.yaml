@@ -14,6 +14,10 @@ cms:
   imagePullSecrets: []
   # -- number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment
   replicas: 1
+  session:
+    cookie:
+      expires: 172800
+      maxAge: 172800
   persistence:  
     # -- sets persistence mode, possible options are `tar` or `mongo`
     mode: tar
