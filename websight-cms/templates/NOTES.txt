@@ -12,4 +12,11 @@ WebSight instance will be available at:{{ ` ` }}
 Custom password and username for admin were set in the {{ .Release.Name }}-{{ .Values.cms.customAdminSecret }} secret.
 {{- end }}
 
+{{ if and (.Values.proxy.enabled) (not (empty .Values.proxy.sites))  -}}
+Sites:
+{{- range .Values.proxy.sites }}
+ - {{ .name }}: http://{{ .host }}
+{{- end }}
+{{- end }}
+
 Happy WebSight helming!

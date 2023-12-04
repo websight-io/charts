@@ -57,6 +57,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.image.repository | string | `"europe-docker.pkg.dev/websight-io/public/websight-cms-starter"` | project image repository |
 | cms.image.tag | string | `nil` | project image tag, overwrites value from `.Chart.appVersion` |
 | cms.imagePullSecrets | list | `[]` | cms image pull secrets |
+| cms.ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom CMS ingress annotations |
+| cms.ingress.enabled | bool | `false` | enables CMS ingress |
+| cms.ingress.host | string | `"cms.127.0.0.1.nip.io"` | cms host |
 | cms.livenessProbe.enabled | bool | `true` | enables pods liveness probe |
 | cms.livenessProbe.failureThreshold | int | `3` |  |
 | cms.livenessProbe.initialDelaySeconds | int | `30` |  |
@@ -80,9 +83,17 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.replicas | int | `1` | number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment |
 | cms.resources | object | `{}` | container's resources settings |
 | cms.session.cookie | object | `{"expires":172800,"maxAge":172800}` | ingress nginx.ingress.kubernetes.io/affinity settings |
-| ingress.annotations | object | `{"nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom ingress annotations |
-| ingress.enabled | bool | `false` | enables nginx ingress |
-| ingress.hosts.cms | string | `"cms.127.0.0.1.nip.io"` | cms host |
+| proxy.enabled | bool | `false` | enables proxy |
+| proxy.env | list | `[{"name":"NGINX_HOST","value":"127.0.0.1.nip.io"}]` | environment variables |
+| proxy.image | object | `{"repository":"nginx","tag":"stable-alpine"}` | proxy image repository |
+| proxy.imagePullSecrets | list | `[]` | proxy image pull secrets |
+| proxy.ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx"}` | custom ingress annotations |
+| proxy.livenessProbe | object | `{"enabled":true,"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":1}` | liveliness probe config |
+| proxy.livenessProbe.enabled | bool | `true` | enables pods liveness probe |
+| proxy.nodeSelector | object | `nil` | node selector |
+| proxy.replicas | int | `1` | number of replicas |
+| proxy.resources | object | `{}` | container's resources settings |
+| proxy.sites | object | `[]` | site configuration, see the `examples/luna-proxy` for more details |
 
 ### Configuration
 

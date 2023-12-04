@@ -1,0 +1,15 @@
+# Example values for websight-cms with luna site Nginx proxy
+# WebSight CMS proxy configuration
+
+proxy:
+  enabled: true
+  sites:
+    # (object) site configuration
+    - name: luna
+      # site host exposed via ingress
+      host: luna.127.0.0.1.nip.io
+      configMapKeyRef:
+        # config map name where site configuration is stored
+        name: luna-site-config
+        # config map key where site configuration template is stored, it will be mounted under the `/tmp/nginx/conf.d/<key>` path
+        key: luna-site.conf.template

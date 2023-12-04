@@ -79,6 +79,7 @@ cms:
     # -- custom CMS ingress annotations
     annotations:
       nginx.ingress.kubernetes.io/proxy-body-size: 5m
+      kubernetes.io/ingress.class: nginx
     # -- cms host
     host: "cms.127.0.0.1.nip.io"
 
@@ -101,9 +102,9 @@ proxy:
       cpu: 50m
       memory: 50Mi
   # -- environment variables
-  env: []
-  # -- Nginx host name used for Nginx config, overwrite it to change the `server_name` in template configurations
-  host: 127.0.0.1.nip.io
+  env:
+    - name: NGINX_HOST
+      value: 127.0.0.1.nip.io
   # -- (object) liveliness probe config
   livenessProbe:
     # -- enables pods liveness probe
@@ -117,6 +118,7 @@ proxy:
   nodeSelector:
   ingress:
     # -- custom ingress annotations
-    annotations: []
-    # -- sites supported by proxy
-    sites: []
+    annotations:
+      kubernetes.io/ingress.class: nginx
+  # -- (object) site configuration, see the `examples/luna-proxy` for more details
+  sites: []

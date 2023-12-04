@@ -1,4 +1,4 @@
-{{- if and (.Values.proxy.enabled) (not (empty .Values.proxy.ingress.sites))  -}}
+{{- if and (.Values.proxy.enabled) (not (empty .Values.proxy.sites))  -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -10,8 +10,8 @@ metadata:
     {{- include "websight-cms.component.labels" (dict "componentName" "proxy" "context" $) | nindent 4 }}
 spec:
   rules:
-  {{- range .Values.proxy.ingress.sites }}
-  - host: {{ tpl . $ }}
+  {{- range .Values.proxy.sites }}
+  - host: {{ .host }}
     http:
       paths:
       - pathType: Prefix
