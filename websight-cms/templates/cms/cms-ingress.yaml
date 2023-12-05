@@ -5,7 +5,7 @@ metadata:
   name: {{ include "websight-cms.component.fullname" (dict "componentName" "cms" "context" $) }}
   annotations:
     kubernetes.io/ingress.class: nginx
-    {{- if gt .Values.cms.replicas 1 }}
+    {{- if gt (.Values.cms.replicas | int) 1 }}
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/session-cookie-name: "websight-cms-sticky"
     nginx.ingress.kubernetes.io/session-cookie-expires: {{ .Values.cms.session.cookie.expires | quote }}
