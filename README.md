@@ -85,13 +85,15 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.session.cookie | object | `{"expires":172800,"maxAge":172800}` | ingress nginx.ingress.kubernetes.io/affinity settings |
 | cms.updateStrategy | object | `{}` | update strategy, works only for `mongo` persistence mode |
 | proxy.enabled | bool | `false` | enables proxy |
-| proxy.env | list | `[{"name":"NGINX_HOST","value":"127.0.0.1.nip.io"}]` | environment variables |
+| proxy.env | list | `[]` | environment variables |
 | proxy.image | object | `{"repository":"nginx","tag":"stable-alpine"}` | proxy image repository |
 | proxy.imagePullSecrets | list | `[]` | proxy image pull secrets |
 | proxy.ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx"}` | custom ingress annotations |
 | proxy.livenessProbe | object | `{"enabled":true,"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":1}` | liveliness probe config |
 | proxy.livenessProbe.enabled | bool | `true` | enables pods liveness probe |
 | proxy.nodeSelector | object | `nil` | node selector |
+| proxy.readinessProbe | object | `{"enabled":true,"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":1}` | readiness probe config |
+| proxy.readinessProbe.enabled | bool | `true` | enables pods readiness probe |
 | proxy.replicas | int | `1` | number of replicas |
 | proxy.resources | object | `{}` | container's resources settings |
 | proxy.sites | object | `[]` | site configuration, see the `examples/luna-proxy` for more details |
@@ -142,6 +144,30 @@ The command removes all the Kubernetes components associated with the chart and 
      --set cms.livenessProbe.initialDelaySeconds=60 \
      -n cms --create-namespace
    ```
+
+#### Running CMS with Ngninx proxy
+To run CMS with Nginx proxy you need to enable it by setting `proxy.enabled` to `true`.
+
+See the [luna-proxy](websight-cms/examples/luna-proxy) example `values.yaml` file for more details on how to configure Nginx to proxy a particular CMS site.
+
+To run the example, follow the steps below:
+1. Create `cms` namespace:
+   ```bash
+   kubectl create namespace cms
+   ```
+2. From `websight-cms` directory create Nginx proxy configuration as a ConfigMap
+   ```bash
+   kubectl create configmap luna-site-config --from-file=examples/luna-proxy/luna-site.conf.template -n cms
+   ```
+3. From `websight-cms` directory install CMS with Nginx proxy enabled:
+   ```bash
+   helm upgrade --install websight-cms . \
+     --set proxy.enabled=true \
+     --set cms.ingress.enabled=true \
+     -n cms -f examples/luna-proxy/values.yaml
+   ```
+   CMS should start in 1-2 minutes.
+   The information about available CMS Panel and Luna site should be printed.
 
 #### Custom CMS admin username and password
 
