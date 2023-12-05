@@ -79,7 +79,6 @@ cms:
     # -- custom CMS ingress annotations
     annotations:
       nginx.ingress.kubernetes.io/proxy-body-size: 5m
-      kubernetes.io/ingress.class: nginx
     # -- cms host
     host: "cms.127.0.0.1.nip.io"
 
