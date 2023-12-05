@@ -60,6 +60,18 @@ spec:
               port: 80
               scheme: HTTP
           {{- end }}
+          {{- if .Values.proxy.readinessProbe.enabled }}
+          readinessProbe:
+            initialDelaySeconds: {{ .Values.proxy.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.proxy.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.proxy.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.proxy.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.proxy.readinessProbe.successThreshold }}
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+          {{- end }}
       volumes:
         - name: tmp-config
           emptyDir:

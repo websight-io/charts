@@ -117,6 +117,15 @@ proxy:
     timeoutSeconds: 1
     failureThreshold: 3
     successThreshold: 1
+  # -- (object) readiness probe config
+  readinessProbe:
+    # -- enables pods readiness probe
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
   # -- (object) node selector
   nodeSelector:
   ingress:
