@@ -3,6 +3,11 @@
 
 proxy:
   enabled: true
+  env:
+    # environment variable used in the Nginx configuration template, read more here:
+    # https://hub.docker.com/_/nginx#:~:text=Using%20environment%20variables%20in%20nginx%20configuration
+    - name: NGINX_HOST
+      value: 127.0.0.1.nip.io
   sites:
     # (object) site configuration
     - name: luna

@@ -105,9 +105,7 @@ proxy:
       cpu: 50m
       memory: 50Mi
   # -- environment variables
-  env:
-    - name: NGINX_HOST
-      value: 127.0.0.1.nip.io
+  env: []
   # -- (object) liveliness probe config
   livenessProbe:
     # -- enables pods liveness probe
