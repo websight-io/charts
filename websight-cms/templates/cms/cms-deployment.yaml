@@ -7,6 +7,9 @@ metadata:
     {{- include "websight-cms.component.labels" (dict "componentName" "cms" "context" $) | nindent 4 }}
 spec:
   replicas: {{ .Values.cms.replicas }}
+  {{- if .Values.cms.updateStrategy }}
+  strategy: {{- toYaml .Values.cms.updateStrategy | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "websight-cms.component.selectorLabels" (dict "componentName" "cms" "context" $) | nindent 6 }}
