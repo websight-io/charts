@@ -7,6 +7,9 @@ metadata:
     {{- include "websight-cms.component.labels" (dict "componentName" "proxy" "context" $) | nindent 4 }}
 spec:
   replicas: {{ .Values.proxy.replicas }}
+  {{- if .Values.proxy.updateStrategy }}
+  strategy: {{- toYaml .Values.proxy.updateStrategy | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "websight-cms.component.selectorLabels" (dict "componentName" "proxy" "context" $) | nindent 6 }}

@@ -14,6 +14,8 @@ cms:
   imagePullSecrets: []
   # -- number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment
   replicas: 1
+  # -- update strategy, works only for `mongo` persistence mode
+  updateStrategy: {}
   session:
     # -- ingress nginx.ingress.kubernetes.io/affinity settings
     cookie:
@@ -94,6 +96,8 @@ proxy:
   imagePullSecrets: []
   # -- number of replicas
   replicas: 1
+  # -- update strategy
+  updateStrategy: {}
   # -- container's resources settings
   resources:
     # @ignored in generated docs

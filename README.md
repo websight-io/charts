@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.22.1](https://img.shields.io/badge/AppVersion-1.22.1-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.23.0](https://img.shields.io/badge/AppVersion-1.23.0-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -57,7 +57,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.image.repository | string | `"europe-docker.pkg.dev/websight-io/public/websight-cms-starter"` | project image repository |
 | cms.image.tag | string | `nil` | project image tag, overwrites value from `.Chart.appVersion` |
 | cms.imagePullSecrets | list | `[]` | cms image pull secrets |
-| cms.ingress.annotations | object | `{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom CMS ingress annotations |
+| cms.ingress.annotations | object | `{"nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom CMS ingress annotations |
 | cms.ingress.enabled | bool | `false` | enables CMS ingress |
 | cms.ingress.host | string | `"cms.127.0.0.1.nip.io"` | cms host |
 | cms.livenessProbe.enabled | bool | `true` | enables pods liveness probe |
@@ -83,6 +83,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.replicas | int | `1` | number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment |
 | cms.resources | object | `{}` | container's resources settings |
 | cms.session.cookie | object | `{"expires":172800,"maxAge":172800}` | ingress nginx.ingress.kubernetes.io/affinity settings |
+| cms.updateStrategy | object | `{}` | update strategy, works only for `mongo` persistence mode |
 | proxy.enabled | bool | `false` | enables proxy |
 | proxy.env | list | `[{"name":"NGINX_HOST","value":"127.0.0.1.nip.io"}]` | environment variables |
 | proxy.image | object | `{"repository":"nginx","tag":"stable-alpine"}` | proxy image repository |
@@ -94,6 +95,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | proxy.replicas | int | `1` | number of replicas |
 | proxy.resources | object | `{}` | container's resources settings |
 | proxy.sites | object | `[]` | site configuration, see the `examples/luna-proxy` for more details |
+| proxy.updateStrategy | object | `{}` | update strategy |
 
 ### Configuration
 
