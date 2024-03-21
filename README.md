@@ -60,6 +60,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.ingress.annotations | object | `{"nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom CMS ingress annotations |
 | cms.ingress.enabled | bool | `false` | enables CMS ingress |
 | cms.ingress.host | string | `"cms.127.0.0.1.nip.io"` | cms host |
+| cms.ingress.ingressClassName | string | `"nginx"` | ingress class name |
+| cms.ingress.session.cookie | object | `{"expires":172800,"maxAge":172800}` | nginx ingress affinity settings |
+| cms.ingress.tls.secretName | string | `""` | defines the secret name for the TLS certificate, if set, the TLS will be enabled |
 | cms.livenessProbe.enabled | bool | `true` | enables pods liveness probe |
 | cms.livenessProbe.failureThreshold | int | `3` |  |
 | cms.livenessProbe.initialDelaySeconds | int | `30` |  |
@@ -82,7 +85,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
 | cms.replicas | int | `1` | number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment |
 | cms.resources | object | `{}` | container's resources settings |
-| cms.session.cookie | object | `{"expires":172800,"maxAge":172800}` | ingress nginx.ingress.kubernetes.io/affinity settings |
 | cms.updateStrategy | object | `{}` | update strategy, works only for `mongo` persistence mode |
 | proxy.enabled | bool | `false` | enables proxy |
 | proxy.env | list | `[]` | environment variables |

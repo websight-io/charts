@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+
+suite: test cms ingress
+templates:
+  - templates/cms/cms-ingress.yaml
+tests:
+  # @Test
+  - it: when ingress not enabled then ingress should not be created
+    asserts:
+      - hasDocuments:
+          count: 0
+  # @Test
+  - it: when ingress enabled then ingress should be created with default values
+    set:
+      cms:
+        ingress:
+          enabled: true
+          host: "cms.test.host"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind: 
+          of: Ingress
+      - matchRegex:
+          path: spec.rules[0].host
+          pattern: cms.test.host
+      - matchRegex:
+          path: spec.rules[0].http.paths[0].path
+          pattern: /
+      - matchRegex:
+          path: spec.ingressClassName
+          pattern: nginx
+  # @Test
+  - it: when ingress enabled and custom annotations then ingress should be created with custom annotations
+    set:
+      cms:
+        ingress:
+          enabled: true
+          host: "cms.test.host"
+          annotations:
+            nginx.ingress.kubernetes.io/proxy-body-size: 5m
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            nginx.ingress.kubernetes.io/proxy-body-size: 5m
+  # @Test
+  - it: when more than one CMS replicas then ingress should be configured with sticky session
+    set:
+      cms:
+        replicas: 2
+        ingress:
+          enabled: true
+          host: "cms.test.host"
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            nginx.ingress.kubernetes.io/affinity: "cookie"
+            nginx.ingress.kubernetes.io/session-cookie-name: "websight-cms-sticky"
+            nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+            nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+  # @Test
+  - it: when ingress tls secret is set then ingress should be created with tls settings
+    set:
+      cms:
+        ingress:
+          enabled: true
+          host: "unit.test.host"
+          tls:
+            secretName: tls-secret-test
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind: 
+          of: Ingress
+      - matchRegex:
+          path: spec.rules[0].host
+          pattern: unit.test.host
+      - matchRegex:
+          path: spec.tls[0].secretName
+          pattern: tls-secret-test
+      - matchRegex:
+          path: spec.tls[0].hosts[0]
+          pattern: unit.test.host

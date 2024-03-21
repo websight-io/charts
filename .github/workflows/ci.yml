@@ -22,6 +22,12 @@ jobs:
       - name: Test with template
         run: helm template --output-dir generated mycms websight-cms
 
+      - name: Run chart helm-unittest
+        run: |
+          cd websight-cms
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git
+          helm unittest -f 'tests/unit/*.yaml' .
+
   verify-installation:
     runs-on: ubuntu-latest
     needs: ['verify-template']
