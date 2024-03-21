@@ -16,11 +16,6 @@ cms:
   replicas: 1
   # -- update strategy, works only for `mongo` persistence mode
   updateStrategy: {}
-  session:
-    # -- ingress nginx.ingress.kubernetes.io/affinity settings
-    cookie:
-      expires: 172800
-      maxAge: 172800
   persistence:  
     # -- sets persistence mode, possible options are `tar` or `mongo`
     mode: tar
@@ -78,11 +73,21 @@ cms:
   ingress:
     # -- enables CMS ingress
     enabled: false
+    # -- ingress class name
+    ingressClassName: nginx
     # -- custom CMS ingress annotations
     annotations:
       nginx.ingress.kubernetes.io/proxy-body-size: 5m
     # -- cms host
     host: "cms.127.0.0.1.nip.io"
+    tls:
+      # -- defines the secret name for the TLS certificate, if set, the TLS will be enabled
+      secretName: ""
+    session:
+      # -- nginx ingress affinity settings
+      cookie:
+        expires: 172800
+        maxAge: 172800
 
 # WebSight CMS proxy configuration
 proxy:
