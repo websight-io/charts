@@ -79,10 +79,10 @@ cms:
     annotations:
       nginx.ingress.kubernetes.io/proxy-body-size: 5m
     # -- cms host
-    host: "cms.127.0.0.1.nip.io"
+    host:
     tls:
       # -- defines the secret name for the TLS certificate, if set, the TLS will be enabled
-      secretName: ""
+      secretName:
     session:
       # -- nginx ingress affinity settings
       cookie:
