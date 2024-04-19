@@ -132,8 +132,9 @@ proxy:
   # -- (object) node selector
   nodeSelector:
   ingress:
+    # -- ingress class name
+    ingressClassName: nginx
     # -- custom ingress annotations
-    annotations:
-      kubernetes.io/ingress.class: nginx
+    annotations: {}
   # -- (object) site configuration, see the `examples/luna-proxy` for more details
   sites: []
