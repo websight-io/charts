@@ -2,12 +2,12 @@
 
 set -x -e
 
-kubectl create namespace cms || true
-kubectl delete secret websight-cms-admin -n cms || true
-kubectl create secret generic websight-cms-admin --from-literal=WS_ADMIN_PASSWORD=pass4test -n cms
+kubectl create namespace websight || true
+kubectl -n websight delete secret websight-cms-admin || true
+kubectl -n websight create secret generic websight-cms-admin --from-literal=WS_ADMIN_PASSWORD=pass4test
 
 cd websight-cms
 
-helm upgrade --install websight-cms . -n cms --set cms.customAdminSecret=admin --wait --timeout 600s
+helm -n websight upgrade --install websight-cms . --set cms.customAdminSecret=admin --wait --timeout 600s
 
-helm test websight-cms -n cms
+helm -n websight test websight-cms
