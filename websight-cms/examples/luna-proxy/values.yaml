@@ -1,6 +1,11 @@
 # Example values for websight-cms with luna site Nginx proxy
 # WebSight CMS proxy configuration
 
+cms:
+  ingress:
+    enabled: true
+    host: cms.127.0.0.1.nip.io
+
 proxy:
   enabled: true
   env:

@@ -9,6 +9,7 @@ metadata:
   labels:
     {{- include "websight-cms.component.labels" (dict "componentName" "proxy" "context" $) | nindent 4 }}
 spec:
+  ingressClassName: {{ .Values.proxy.ingress.ingressClassName }}
   rules:
   {{- range .Values.proxy.sites }}
   - host: {{ .host }}

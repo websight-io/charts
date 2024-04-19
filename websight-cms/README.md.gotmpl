@@ -7,40 +7,34 @@
 
 ## Prerequisites
 
-- Kubernetes cluster with at least 8 GB ram and 2 CPU
-- Ingress installed on k8s cluster (you may use e.g. [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/)).
+- Kubernetes cluster with at least 4 GB memory and 1 CPU (8 GB/2 CPU if you want to run CMS with MongoDB).
+- Ingress Controller installed on k8s cluster (you may use e.g. [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/)).
 - Helm 3.8+
+- [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) (optional - for local development)
 
 ## CMS
 
 ### Quick start
 
-> Important!!!
-> Make sure to install [Nginx ingress](https://kubernetes.github.io/ingress-nginx/deploy/) before installing WebSight CMS.
-
 ```bash
 helm upgrade --install websight-cms websight-cms \
   --repo https://websight-io.github.io/charts \
-  --namespace cms --create-namespace --set ingress.enabled=true
+  --set cms.ingress.enabled=true \
+  --set cms.ingress.host=cms.127.0.0.1.nip.io \
+  --namespace websight --create-namespace --wait
 ```
 
-> WebSight instance will be available at: 
+This command deploys WebSight CMS on Kubernetes cluster with the default configuration in the `websight` namespace and waits until the deployment is ready.
+
+> WebSight instance will be available at:
 > - CMS Panel: http://cms.127.0.0.1.nip.io
 
-### Installing the Chart
-To install the chart with the release name `websight-cms` using the existing domain that points to your Kubernetes cluster, run: 
-```bash
-helm repo add websight https://websight-io.github.io/charts
-helm install --set ingress.enabled=true --set ingress.hosts.cms=cms.my-page.domain websight-cms websight/websight-cms -n cms --create-namespace
-```
-
-This command deploys WebSight CMS on Kubernetes cluster with the default configuration in the `cms` namespace.
-The [Parameters](#parameters) section lists the parameters that can be configured.
+The default CMS admin credentials are `wsadmin/wsadmin`.
 
 ### Uninstalling the Chart
 To uninstall/delete the deployment run:
 ```bash
-helm uninstall websight-cms -n cms
+helm uninstall websight-cms -n websight
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -66,7 +60,7 @@ The command removes all the Kubernetes components associated with the chart and 
       --set auth.enabled=true \
       --set auth.rootUser="mongoadmin" \
       --set auth.rootPassword="mongoadmin" \
-      -n cms --create-namespace
+      -n mongo --create-namespace
     ```
 
     </p>
@@ -77,13 +71,12 @@ The command removes all the Kubernetes components associated with the chart and 
     <p>
 
     ```bash
-    kubectl create namespace cms
-    kubectl run mongodb --image=mongo:7 -n cms \
+    kubectl create namespace mongo
+    kubectl -n mongo run mongodb --image=mongo:7 \
       --env MONGO_INITDB_ROOT_USERNAME=mongoadmin \
       --env MONGO_INITDB_ROOT_PASSWORD=mongoadmin
-    kubectl expose pod mongodb --port=27017 --name=mongodb -n cms
+    kubectl -n mongo expose pod mongodb --port=27017 --name=mongodb
     ```
-
     </p>
     </details>
 
@@ -91,9 +84,9 @@ The command removes all the Kubernetes components associated with the chart and 
    ```bash
    helm upgrade --install websight-cms . \
      --set cms.persistence.mode=mongo \
-     --set cms.persistence.mongo.hosts='mongodb:27017' \
+     --set cms.persistence.mongo.hosts='mongodb.mongo:27017' \
      --set cms.livenessProbe.initialDelaySeconds=60 \
-     -n cms --create-namespace
+     -n websight --create-namespace
    ```
 
 #### Running CMS with Ngninx proxy
@@ -101,23 +94,22 @@ To run CMS with Nginx proxy you need to enable it by setting `proxy.enabled` to 
 
 See the [luna-proxy](websight-cms/examples/luna-proxy) example `values.yaml` file for more details on how to configure Nginx to proxy a particular CMS site.
 
-To run the example, follow the steps below:
-1. Create `cms` namespace:
+To run the example, clone this repository and follow the steps below:
+
+1. Create `websight` namespace:
    ```bash
-   kubectl create namespace cms
+   kubectl create namespace websight
    ```
 2. From `websight-cms` directory create Nginx proxy configuration as a ConfigMap
    ```bash
-   kubectl create configmap luna-site-config --from-file=examples/luna-proxy/luna-site.conf.template -n cms
+   kubectl -n websight create configmap luna-site-config --from-file=examples/luna-proxy/luna-site.conf.template
    ```
 3. From `websight-cms` directory install CMS with Nginx proxy enabled:
    ```bash
-   helm upgrade --install websight-cms . \
-     --set proxy.enabled=true \
-     --set cms.ingress.enabled=true \
-     -n cms -f examples/luna-proxy/values.yaml
+   helm -n websight upgrade --install websight-cms . \
+     -f examples/luna-proxy/values.yaml --wait
    ```
-   CMS should start in 1-2 minutes. 
+   CMS should start in 1-2 minutes.
    The information about available CMS Panel and Luna site should be printed.
 
 #### Custom CMS admin username and password
@@ -127,12 +119,12 @@ To run the example, follow the steps below:
 > Setting custom username and password for the CMS administrator is possible only during the first installation!
 
 By default, the CMS deployment runs an admin panel instance with default `wsadmin/wsadmin` credentials. To set a custom username and password, use Secret named `<Release name>-your-name`
-with `WS_ADMIN_USERNAME` and `WS_ADMIN_PASSWORD` values configured and configure `cms.envsFromSecret` and `cms.customAdminSecret` accordingly.
+with `WS_ADMIN_USERNAME` and `WS_ADMIN_PASSWORD` values configured and configure `cms.envsFromSecret` and `cms.customAdminSecret` accordingly. Create secret in the same namespace where CMS is deployed.
 
 Example:
 
 ```bash
-kubectl create secret generic <Release name>-cms-admin -n cms --from-literal WS_ADMIN_USERNAME=myadmin --from-literal WS_ADMIN_PASSWORD=mys3cretPassw0rd
+kubectl create secret generic <Release name>-cms-admin -n websight --from-literal WS_ADMIN_USERNAME=myadmin --from-literal WS_ADMIN_PASSWORD=mys3cretPassw0rd
 ```
 
 > values.yaml
@@ -142,3 +134,22 @@ cms:
     - cms-admin                # add all `<Release name>-cms-admin` secrets as env variables (this is how CMS reads custom username)
   customAdminSecret: cms-admin # mount `<Release name>-cms-admin` secret for CMS pod and add value from `WS_ADMIN_PASSWORD` key as a secret file (this is how CMS reads custom password)
 ```
+
+### Local development
+
+To run WebSight CMS locally with Kind, clone the repository and follow the steps below:
+1. Create a Kind cluster with Ingress Nginx controller:
+   ```bash
+   kind create cluster --config .github/cluster/kind-cluster.yaml      
+   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+   ```
+   And wait until the Ingress controller is ready:
+   ```bash
+   kubectl -n ingress-nginx rollout status deployment ingress-nginx-controller
+   ```
+2. Install WebSight CMS with the default configuration from the `websight-cms` directory:
+   ```bash
+   helm upgrade --install websight-cms . \
+     --set cms.ingress.enabled=true \
+     --namespace websight --create-namespace --wait
+   ```
