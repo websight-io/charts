@@ -5,6 +5,9 @@ set -x -e
 
 # Install and expose MongoDB
 kubectl create namespace mongo
+
+kubectl -n mongo create serviceaccount default || true
+
 kubectl -n mongo run mongodb --image=mongo:7 \
   --env MONGO_INITDB_ROOT_USERNAME=mongoadmin \
   --env MONGO_INITDB_ROOT_PASSWORD=mongoadmin
