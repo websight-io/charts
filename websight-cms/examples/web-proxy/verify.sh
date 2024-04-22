@@ -9,11 +9,9 @@ echo "Testing WebSight CMS in: $CMS_NAMESPACE"
 set -x -e
 
 # Publish Luna Homepage
-RESPONSE=$(curl -X POST http://cms.127.0.0.1.nip.io/content/luna/pages.websight-pages-space-service.publish-pages.action \
+RESPONSE=$(curl -X POST http://cms.127.0.0.1.nip.io/content/luna/assets/images.websight-assets-space-service.publish-assets.action \
     -u  ${CMS_USER}:${CMS_PASSWORD} \
-    -F "forceAction=false" \
-    -F "publishAllReferences=false" \
-    -F "items=Homepage" \
+    -F "items=LUNA.svg" \
     -H "accept: application/json" \
     -H "Content-Type: multipart/form-data")
 
@@ -27,18 +25,18 @@ else
     exit 1
 fi
 
-# Check http://luna.127.0.0.1.nip.io/ up to 10 times until 200 returned
+# Check http://luna.127.0.0.1.nip.io/published/luna/assets/images/LUNA.svg/jcr:content/renditions/original.svg up to 10 times until 200 returned
 TOTAL_ATTEMPTS=10
 for i in $(seq 1 $TOTAL_ATTEMPTS); do
-    STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://luna.127.0.0.1.nip.io/test.html)
+    STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://luna.127.0.0.1.nip.io/published/luna/assets/images/LUNA.svg/jcr:content/renditions/original.svg)
     if [ "$STATUS_CODE" -eq 200 ]; then
-        echo "Page http://luna.127.0.0.1.nip.io/homepage.html is up and running"
+        echo "Asset LUNA.svg is pubilc!"
         break
     else
         echo "Attempt ${i}/${TOTAL_ATTEMPTS}: Expected 200, got $STATUS_CODE"
     fi
     if [ "$i" == "${TOTAL_ATTEMPTS}" ]; then
-        echo "Page not available after $TOTAL_ATTEMPTS attempts"
+        echo "Asset not available after $TOTAL_ATTEMPTS attempts"
         exit 1
     fi
     sleep 5
