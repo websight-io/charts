@@ -1,0 +1,14 @@
+name: 'CI: verify CMS with MongoDB store deployment'
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-mongodb-store-deployment:
+    uses: ./.github/workflows/helper-verify-deployment-reusable-workflow.yaml
+    secrets: inherit
+    with:
+      example: mongodb-store
