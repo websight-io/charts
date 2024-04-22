@@ -21,6 +21,7 @@ spec:
       {{- if .Values.cms.imagePullSecrets }}
       imagePullSecrets: {{- .Values.cms.imagePullSecrets | toYaml | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ include "websight-cms.component.serviceAccountName" (dict "componentName" "cms" "serviceAccount" .Values.cms.serviceAccount "context" $) }}
       containers:
         - name: cms
           image: "{{ .Values.cms.image.repository }}:{{ default .Chart.AppVersion .Values.cms.image.tag }}"

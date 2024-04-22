@@ -79,6 +79,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.readinessProbe.timeoutSeconds | int | `10` |  |
 | cms.replicas | int | `1` | number of replicas, mind that `tar` persistence mode will create a StatefulSet, while `mongo` will create a Deployment |
 | cms.resources | object | `{}` | container's resources settings |
+| cms.serviceAccount.automountServiceAccountToken | bool | `true` | automount service account token |
+| cms.serviceAccount.create | bool | `true` | create service account |
+| cms.serviceAccount.name | string | `nil` | service account name, if the name is not set, then a name is generated using the cms's fullname template |
 | cms.updateStrategy | object | `{}` | update strategy, works only for `mongo` persistence mode |
 | proxy.enabled | bool | `false` | enables proxy |
 | proxy.env | list | `[]` | environment variables |
@@ -93,6 +96,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | proxy.readinessProbe.enabled | bool | `true` | enables pods readiness probe |
 | proxy.replicas | int | `1` | number of replicas |
 | proxy.resources | object | `{}` | container's resources settings |
+| proxy.serviceAccount.automountServiceAccountToken | bool | `true` | automount service account token |
+| proxy.serviceAccount.create | bool | `true` | create service account |
+| proxy.serviceAccount.name | string | `nil` | service account name, if the name is not set, then a name is generated using the proxy's fullname template |
 | proxy.sites | object | `[]` | site configuration, see the `examples/luna-proxy` for more details |
 | proxy.updateStrategy | object | `{}` | update strategy |
 

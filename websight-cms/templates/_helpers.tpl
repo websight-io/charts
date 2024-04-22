@@ -51,18 +51,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "websight-cms.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "websight-cms.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-
-{{/*
 Create a default fully qualified component name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
@@ -80,6 +68,20 @@ Usage:
 {{- printf "%s-%s-%s" .context.Release.Name $name .componentName | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
+{{- end }}
+
+{{/*
+Create the name of the component-type shared service account to use.
+
+Usage:
+{{ include "websight-cms.component.serviceAccountName" (dict "componentName" "component-name" "serviceAccount" saObject "context" $) }}
+*/}}
+{{- define "websight-cms.component.serviceAccountName" -}}
+{{- if .serviceAccount.create -}}
+    {{ .serviceAccount.name | default (include "websight-cms.component.fullname" (dict "componentName" .componentName "context" .context)) }}
+{{- else -}}
+    {{ .serviceAccount.name | default "default" }}
+{{- end -}}
 {{- end }}
 
 {{/*
