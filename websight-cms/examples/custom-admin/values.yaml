@@ -1,0 +1,4 @@
+# Example values for websight-cms with custom admin configuration
+
+cms:
+  customAdminSecret: admin

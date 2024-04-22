@@ -1,0 +1,38 @@
+name: 'Test: Verify WebSight CMS Helm chart installation'
+
+on:
+  workflow_call:
+    inputs:
+      example:
+        description: 'The example to run and test'
+        type: string
+        required: true
+
+jobs:
+  verify-chart-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21.6'
+  
+      - name: Setup Kind
+        run: go install sigs.k8s.io/kind@v0.20.0
+
+      - name: Create K8s cluster with Kind
+        run: kind create cluster --config .github/cluster/kind-cluster.yaml
+
+      - uses: azure/setup-helm@v3
+        with:
+          version: v3.13.2
+
+      - name: Install WebSight CMS example with prerequisites
+        run: websight-cms/examples/${{ inputs.example }}/install-with-prerequisites.sh
+
+      - name: Verify installation
+        run: websight-cms/examples/${{ inputs.example }}/verify.sh
