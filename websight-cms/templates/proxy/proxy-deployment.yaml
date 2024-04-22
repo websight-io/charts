@@ -21,6 +21,7 @@ spec:
       {{- if .Values.proxy.imagePullSecrets }}
       imagePullSecrets: {{- .Values.proxy.imagePullSecrets | toYaml | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ include "websight-cms.component.serviceAccountName" (dict "componentName" "proxy" "serviceAccount" .Values.proxy.serviceAccount "context" $) }}
       containers:
         - name: nginx
           image: "{{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag }}"

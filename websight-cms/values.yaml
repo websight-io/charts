@@ -88,6 +88,13 @@ cms:
       cookie:
         expires: 172800
         maxAge: 172800
+  serviceAccount:
+    # -- create service account
+    create: true
+    # -- service account name, if the name is not set, then a name is generated using the cms's fullname template
+    name:
+    # -- automount service account token
+    automountServiceAccountToken: true
 
 # WebSight CMS proxy configuration
 proxy:
@@ -138,3 +145,10 @@ proxy:
     annotations: {}
   # -- (object) site configuration, see the `examples/luna-proxy` for more details
   sites: []
+  serviceAccount:
+    # -- create service account
+    create: true
+    # -- service account name, if the name is not set, then a name is generated using the proxy's fullname template
+    name:
+    # -- automount service account token
+    automountServiceAccountToken: true
