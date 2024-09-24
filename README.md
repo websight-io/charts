@@ -1,5 +1,5 @@
 # WebSight Charts
-![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.24.8](https://img.shields.io/badge/AppVersion-1.24.8-informational?style=flat-square)
+![Version: 2.2.1](https://img.shields.io/badge/Version-2.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.24.13](https://img.shields.io/badge/AppVersion-1.24.13-informational?style=flat-square)
 
 This chart bootstraps WebSight CMS deployment on a Kubernetes cluster using the Helm package manager.
 
@@ -48,7 +48,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | cms.envsFromConfig | list | `[]` | List of config maps that will work with `configMapRef` |
 | cms.envsFromSecret | list | `[]` | List of secrets that will work with `secretRef` |
 | cms.image.pullPolicy | string | `"IfNotPresent"` | project image pull policy |
-| cms.image.repository | string | `"europe-docker.pkg.dev/websight-io/public/websight-cms-starter"` | project image repository |
+| cms.image.repository | string | `"europe-west1-docker.pkg.dev/websight-io/websight-docker-releases/websight-cms-starter"` | project image repository |
 | cms.image.tag | string | `nil` | project image tag, overwrites value from `.Chart.appVersion` |
 | cms.imagePullSecrets | list | `[]` | cms image pull secrets |
 | cms.ingress.annotations | object | `{"nginx.ingress.kubernetes.io/proxy-body-size":"5m"}` | custom CMS ingress annotations |
