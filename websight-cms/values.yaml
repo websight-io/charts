@@ -5,7 +5,7 @@
 cms:
   image: 
     # -- project image repository
-    repository: europe-docker.pkg.dev/websight-io/public/websight-cms-starter
+    repository: europe-west1-docker.pkg.dev/websight-io/websight-docker-releases/websight-cms-starter
     # -- project image tag, overwrites value from `.Chart.appVersion`
     tag:
     # -- project image pull policy
