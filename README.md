@@ -147,6 +147,9 @@ The command removes all the Kubernetes components associated with the chart and 
      -n websight --create-namespace
    ```
 
+**Example:**
+See the [mongodb-store](websight-cms/examples/mongodb-store) example `values.yaml` file for more details on how to run CMS with MongoDB as NodeStore.
+
 #### Running CMS with Ngninx proxy
 To run CMS with Nginx proxy you need to enable it by setting `proxy.enabled` to `true`.
 
@@ -170,6 +173,9 @@ To run the example, clone this repository and follow the steps below:
    CMS should start in 1-2 minutes.
    The information about available CMS Panel and Luna site should be printed.
 
+**Example:**
+See the [web-proxy](websight-cms/examples/web-proxy) example `values.yaml` file for more details on how to configure Nginx to proxy a particular CMS site.
+
 #### Custom CMS admin username and password
 
 > Important!!!
@@ -192,6 +198,9 @@ cms:
     - cms-admin                # add all `<Release name>-cms-admin` secrets as env variables (this is how CMS reads custom username)
   customAdminSecret: cms-admin # mount `<Release name>-cms-admin` secret for CMS pod and add value from `WS_ADMIN_PASSWORD` key as a secret file (this is how CMS reads custom password)
 ```
+
+**Example:**
+See the [custom-admin](websight-cms/examples/custom-admin) example `values.yaml` file for more details on how to set custom CMS admin username and password.
 
 ### Local development
 

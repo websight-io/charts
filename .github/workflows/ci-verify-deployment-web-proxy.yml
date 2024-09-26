@@ -1,0 +1,14 @@
+name: 'CI: verify CMS with web proxy deployment'
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-web-proxy-deployment:
+    uses: ./.github/workflows/helper-verify-deployment-reusable-workflow.yaml
+    secrets: inherit
+    with:
+      example: web-proxy

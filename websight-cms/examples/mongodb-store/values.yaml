@@ -1,0 +1,10 @@
+# Example values for websight-cms with MongoDB persistence mode
+
+cms:
+  persistence:
+    mode: mongo
+    mongo:
+      hosts: mongodb.mongo:27017
+  livelinessProbe:
+    # give more time to start with MongoDB
+    initialDelaySeconds: 60

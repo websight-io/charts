@@ -1,0 +1,14 @@
+name: 'CI: verify CMS with custom admin deployment'
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-custom-admin-deployment:
+    uses: ./.github/workflows/helper-verify-deployment-reusable-workflow.yaml
+    secrets: inherit
+    with:
+      example: custom-admin
