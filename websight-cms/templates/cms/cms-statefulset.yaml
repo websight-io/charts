@@ -96,6 +96,9 @@ spec:
       {{- if .Values.cms.nodeSelector }}
       nodeSelector: {{- .Values.cms.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
+      {{- if .Values.cms.securityContext }}
+      securityContext: {{- .Values.cms.securityContext | toYaml | nindent 8 }}
+      {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: segment-store-repository
