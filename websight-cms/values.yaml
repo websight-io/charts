@@ -67,6 +67,7 @@ cms:
     successThreshold: 1
   # -- (object) node selector
   nodeSelector:
+  securityContext:
   debug:
     # -- enables debug on port 5005
     enabled: false

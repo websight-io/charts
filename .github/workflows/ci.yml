@@ -25,7 +25,7 @@ jobs:
       - name: Run chart helm-unittest
         run: |
           cd websight-cms
-          helm plugin install https://github.com/helm-unittest/helm-unittest.git
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git --version v0.3.0
           helm unittest -f 'tests/unit/*.yaml' .
 
   verify-chart-deployment:
